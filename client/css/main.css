@@ -1,0 +1,333 @@
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+@font-face {
+    font-family: Dosis Medium;
+    src: url('../fonts/Dosis-Medium.ttf');
+    src: url('../fonts/Dosis-Medium.ttf') format ('truetype');
+}
+
+@font-face {
+    font-family: Dosis SemiBold;
+    src: url('../fonts/Dosis-SemiBold.ttf');
+    src: url('../fonts/Dosis-SemiBold.ttf') format ('truetype');
+}
+
+
+body {
+    padding-top: 0;
+    font-family: Dosis Medium;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+strong {
+    font-family: Dosis SemiBold;
+    font-weight: 400;
+}
+
+.musichive-inline-block {
+    display: inline-block;
+}
+
+.musichive-table-cell-middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.musichive-hex {
+    z-index: -9;
+    position: absolute;
+    height: 100vh;
+    width: 80vw;
+    left: 10vw;
+    opacity: 0.9;
+    background: url('../img/hexagon.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.musichive-bg {
+    background: url('../img/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#musichive-container {
+    height: 100vh;
+}
+
+#musichive-navigation {
+    padding: 0;
+    background: #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1vh;
+}
+
+.musichive-nav {
+    white-space: nowrap;
+    transition: width 0.3s ease-out;
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+ul.nav-tabs {
+    border: none;
+}
+
+.nav-tabs li {
+    width: 20%;
+    margin-bottom: 0;
+}
+
+.nav-tabs li.active {
+    width: 60%;
+}
+
+.nav-tabs > li > a {
+    margin-right: 0;
+}
+
+.musichive-info-small {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1vh;
+}
+
+#musichive-nav-tabs-settings.active {
+    text-align: center;
+}
+
+.tab-pane {
+}
+
+#musichive-player-container {
+    margin-bottom: 1vh;
+}
+
+#musichive-player-heading {
+    white-space: nowrap;
+    margin-bottom: 1vh;
+    font-weight: bold;
+}
+
+#musichive-player-heading-dj {
+    position: absolute;
+    right: 15px;
+    width: 20vw;
+    max-width: 160px;
+}
+
+.musichive-image-height {
+    height: 20vw;
+    max-height: 160px;  
+}
+
+#musichive-user-image-upload {
+    display: table;
+    vertical-align: middle;
+    width: 20vw;
+    max-width: 160px;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    cursor: pointer;
+    text-align: center;
+    height: 4vw;
+    min-height: 40px;
+}
+
+@media (min-width: 767px) {
+    #musichive-user-image-upload-icon {
+        display: none;
+    }
+}
+
+#musichive-user-image-container {
+    display: table-cell;
+    padding-left: 1vh;
+}
+
+#musichive-user-image {
+    height: 20vw;
+    max-height: 160px;
+    width: 100%;
+    background-image: url('../img/user-image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+}
+
+.musichive-player-info-text-container {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#musichive-track-info {
+    float: left;
+    width: 45vw;
+    max-width: 300px;
+    display: table-cell;
+    padding-right: 10px;
+}
+
+#musichive-downvote, #musichive-show-user {
+    display: table-cell;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+#musichive-show-user-inner {
+    margin-left: 10px;
+}
+
+#musichive-playlist-container {
+
+}
+
+#musichive-playlist-trash {
+    
+}
+
+.musichive-border-top {
+    border-top: 1px solid #ccc;
+}
+
+.musichive-table-icon-container {
+    width: 4vw;
+    min-width: 40px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1.2em;
+    color: #888;
+}
+
+.musichive-table-container {
+    margin-top: 1vh;
+    padding-top: 1vh;
+    height: 4vw;
+    min-height: 40px;
+    width: 100%;
+    display: table;
+}
+
+.musichive-inline-table {
+    display: inline-table;
+    vertical-align: middle;
+    height: 4vw;
+    min-height: 40px;
+}
+
+.musichive-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+    height: 4vw;
+    min-height: 40px;
+}
+
+.musichive-playlist-entry-container {
+    /* used in JS for counting playlist entries*/
+    border-top: 1px dotted #ccc;
+    transition: opacity 0.3s ease-out;
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.musichive-playlist-entry-container:first-child .musichive-song-move-up{
+    display: none !important;
+}
+
+.musichive-playlist-entry-container:last-child .musichive-song-move-down{
+    display: none !important;
+}
+
+
+.musichive-hide {
+    opacity: 0;
+}
+
+.musichive-playlist-entry-number {
+    width: 2vw;
+    min-width: 15px;
+    max-width: 30px;
+}
+
+.musichive-playlist-entry-title {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 35vw;
+}
+
+.musichive-table-icon-container{
+    margin-left: 10px;
+}
+
+.musichive-input-file-upload{
+    display: none !important;
+}
+
+.music-hive-upload-progress{
+    font-weight: bold;
+    display: block;
+}
+
+.musichive-upload-song-wrapper{
+    float: right;
+}
+
+.musichive-upload-song-abort{
+    cursor: pointer;
+}
+
+.musichive-upload-song-start{
+    min-height: 40px; 
+    min-width: 70px;
+    background-color: #1a8de6;
+    color: #ffffff;
+    height: 4vw;
+    cursor: pointer;
+}
+
+.musichive-upload-song-progress{
+    border: 1px solid transparent;
+}
+
+.musichive-upload-song-icon{
+    cursor: pointer;
+    color: #1a8de6;
+}
+
+.musichive-icon-space-right {
+    margin-right: 10px;
+}
+
+#musichive-playlist-add-container {
+    border-top: 1px dotted #ccc;
+}
+
+.musichive-fileupload {
+    overflow: hidden;
+}
+
+/* marquee animation */
+.marquee {
+    animation: marquee 5s linear 1s infinite alternate;
+    -webkit-animation: marquee 5s linear 1s infinite alternate;
+}
+
+.marquee:hover {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+}
+
+@keyframes marquee {
+    from  { text-indent:  2% }
+    to    { text-indent: -35% }
+}
+
+@-webkit-keyframes marquee {
+    from  { text-indent:  2% }
+    to    { text-indent: -35% }
+}

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>musicHive</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+        
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <!-- desktop background hexagon -->
+        <div id="musichive-background" class="musichive-hex hidden-xs">
+            
+        </div>
+        
+        <!-- main container -->
+        <div class="container" id="musichive-container">
+            
+            <!-- navigation -->
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2" id="musichive-navigation">
+                    <ul class="nav nav-tabs" role="navigation">
+                        <li id="musichive-nav-tabs-main" class="active musichive-nav pull-left">
+                            <a href="#musichive-main" data-toggle="tab">
+                                <span class="glyphicon glyphicon-music"></span><span class="musichive-nav-desc"> musicHive</span>
+                            </a>
+                        </li>
+                        <li id="musichive-nav-tabs-info" class="musichive-nav pull-right text-right">
+                            <a href="#musichive-info" data-toggle="tab">
+                                <span class="glyphicon glyphicon-question-sign"></span><span class="musichive-nav-desc hidden-xs"> Info</span>
+                            </a>
+                        </li>
+                        <li id="musichive-nav-tabs-settings" class="musichive-nav pull-right text-right">
+                            <a href="#musichive-settings" data-toggle="tab">
+                                <span class="glyphicon glyphicon-cog"></span><span class="musichive-nav-desc hidden-xs"> Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- / navigation -->
+
+            <!-- tab content -->
+            <div class="tab-content">
+                <!-- main tab -->
+                <div id="musichive-main" class="tab-pane fade in active">
+                    <section title="musicHive Main">
+                        
+                        <!-- info area -->
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <span style="display: inline;">
+                                    Internet Access: <span id="musichive-info-internet">Yes</span>
+                                </span>
+                                <span class="pull-right text-right">
+                                    Active Users: <span id="musichive-info-users">42</span>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- / info area -->
+                        
+                        <!-- player area -->
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div id="musichive-player-container" class="musichive-table-container musichive-border-top">
+                                    <div id="musichive-player-heading">
+                                        <div class="musichive-inline-block">Currently Playing:</div>
+                                        <div id="musichive-player-heading-dj" class="musichive-inline-block hide">DJ:</div>
+                                    </div>
+                                    <div style="height: 60px;">
+                                        <div id="musichive-track-info" class="">
+                                            <div class="musichive-player-info-text-container" id="musichive-player-trackid">
+                                                <span class="musichive-player-info-text" id="musichive-player-trackid-text">Lieber Verbrennen Als Erfrieren</span>
+                                            </div>
+                                            <div class="musichive-player-info-text-container" id="musichive-player-artist">
+                                                <span class="musichive-player-info-text" id="musichive-player-artist-text">Fettes Brot</span>
+                                            </div>
+                                            <div class="musichive-player-info-text-container" id="musichive-player-album">
+                                                <span class="musichive-player-info-text" id="musichive-player-album-text">Fettes (2010)</span>
+                                            </div>
+											<div id="musichive-downvote" class="">
+                                                <div class="musichive-table-icon-container musichive-inline-table">
+                                                    <span class="glyphicon glyphicon-thumbs-down musichive-table-cell"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="display: table; height: 100%" class="pull-right">
+                                            <div id="musichive-user-image-container" class="pull-right">
+                                                <div id="musichive-user-image" class="musichive-inline-table">
+                                                    
+                                                </div>
+                                                <div id="musichive-user-image-upload">
+                                                    <span class="hidden-xs musichive-table-cell-middle">Upload your DJ image</span>
+                                                    <span id="musichive-user-image-upload-icon" class="glyphicon glyphicon-upload musichive-table-cell-middle"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / player area -->
+                        
+                        <!-- playlist area including upload -->
+                        <div id="musichive-playlist-container">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <!-- own playlist entries -->
+                                    <div id="musichive-playlist-entrypoint">
+                                        <div class="musichive-table-container musichive-border-top">
+                                            <div class="musichive-inline-table">
+                                                <div class="musichive-table-cell">
+                                                    <strong>Your playlist:</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="all-entries">
+                                        <div class="musichive-playlist-entry-container musichive-table-container musichive-playing" id="musichive-playlist-entry-1">
+                                            <div class="musichive-table-cell musichive-playlist-entry-number">
+                                                1.
+                                            </div>
+                                            <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
+                                                <div class="musichive-inline-table musichive-playlist-entry-title">
+                                                    <div class="musichive-table-cell musichive-playlist-entry-title">
+                                                        <span class="musichive-playlist-entry-title-text">...</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- upload -->
+                                                
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-icon">
+                                                    <span class="glyphicon glyphicon-upload musichive-table-cell"></span>
+                                                </div>
+                                                
+                                                <!-- upload cancel -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-abort hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- upload start -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-start hide">
+                                                    <span class="musichive-table-cell">Upload</span>
+                                                </div>
+
+                                                <!-- upload progress -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-progress hide">
+                                                    <span class="musichive-table-cell">0%</span>
+                                                </div>
+                                                
+                                                <!-- upload END -->
+                                                <!-- edit song -->
+
+                                                <!-- song remove -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-remove hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move up -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-up hide">
+                                                    <span class="glyphicon glyphicon-chevron-up musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move down -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-down hide">
+                                                    <span class="glyphicon glyphicon-chevron-down musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- edit song END -->
+
+                                                <input type="file" class="musichive-input-file-upload" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="musichive-playlist-entry-container musichive-table-container" id="musichive-playlist-entry-2">
+                                            <div class="musichive-table-cell musichive-playlist-entry-number">
+                                                2.
+                                            </div>
+                                            <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
+                                                <div class="musichive-inline-table">
+                                                    <div class="musichive-table-cell musichive-playlist-entry-title">
+                                                        <span class="musichive-playlist-entry-title-text">...</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- upload -->
+                                                
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-icon">
+                                                    <span class="glyphicon glyphicon-upload musichive-table-cell"></span>
+                                                </div>
+                                                
+                                                <!-- upload cancel -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-abort hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- upload start -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-start hide">
+                                                    <span class="musichive-table-cell">Upload</span>
+                                                </div>
+
+                                                <!-- upload progress -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-progress hide">
+                                                    <span class="musichive-table-cell">0%</span>
+                                                </div>
+                                                
+                                                <!-- upload END -->
+                                                <!-- edit song -->
+
+                                                <!-- song remove -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-remove hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move up -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-up hide">
+                                                    <span class="glyphicon glyphicon-chevron-up musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move down -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-down hide">
+                                                    <span class="glyphicon glyphicon-chevron-down musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- edit song END -->
+
+                                                <input type="file" class="musichive-input-file-upload" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="musichive-playlist-entry-container musichive-table-container" id="musichive-playlist-entry-3">
+                                            <div class="musichive-table-cell musichive-playlist-entry-number">
+                                                3.
+                                            </div>
+                                            <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
+                                                <div class="musichive-inline-table">
+                                                    <div class="musichive-table-cell musichive-playlist-entry-title">
+                                                        <span class="musichive-playlist-entry-title-text">...</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- upload -->
+
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-icon">
+                                                    <span class="glyphicon glyphicon-upload musichive-table-cell"></span>
+                                                </div>
+                                                
+                                                <!-- upload cancel -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-abort hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- upload start -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-start hide">
+                                                    <span class="musichive-table-cell">Upload</span>
+                                                </div>
+
+                                                <!-- upload progress -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-progress hide">
+                                                    <span class="musichive-table-cell">0%</span>
+                                                </div>
+                                                
+                                                <!-- upload END -->
+                                                <!-- edit song -->
+
+                                                <!-- song remove -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-remove hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move up -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-up hide">
+                                                    <span class="glyphicon glyphicon-chevron-up musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move down -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-down hide">
+                                                    <span class="glyphicon glyphicon-chevron-down musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- edit song END -->
+                                                
+                                                <input type="file" class="musichive-input-file-upload" />
+                                            </div>
+                                        </div>
+
+                                        <div class="musichive-playlist-entry-container musichive-table-container" id="musichive-playlist-entry-4">
+                                            <div class="musichive-table-cell musichive-playlist-entry-number">
+                                                4.
+                                            </div>
+                                            <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
+                                                <div class="musichive-inline-table">
+                                                    <div class="musichive-table-cell musichive-playlist-entry-title">
+                                                        <span class="musichive-playlist-entry-title-text">...</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- upload -->
+                                                
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-icon">
+                                                    <span class="glyphicon glyphicon-upload musichive-table-cell"></span>
+                                                </div>
+                                                
+                                                <!-- upload cancel -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-abort hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- upload start -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-start hide">
+                                                    <span class="musichive-table-cell">Upload</span>
+                                                </div>
+
+                                                <!-- upload progress -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-progress hide">
+                                                    <span class="musichive-table-cell">0%</span>
+                                                </div>
+                                                
+                                                <!-- upload END -->
+                                                <!-- edit song -->
+
+                                                <!-- song remove -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-remove hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move up -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-up hide">
+                                                    <span class="glyphicon glyphicon-chevron-up musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move down -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-down hide">
+                                                    <span class="glyphicon glyphicon-chevron-down musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- edit song END -->
+
+                                                <input type="file" class="musichive-input-file-upload" />
+                                            </div>
+                                        </div>
+
+                                        <div class="musichive-playlist-entry-container musichive-table-container" id="musichive-playlist-entry-5">
+                                            <div class="musichive-table-cell musichive-playlist-entry-number">
+                                                5.
+                                            </div>
+                                            <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
+                                                <div class="musichive-inline-table">
+                                                    <div class="musichive-table-cell musichive-playlist-entry-title">
+                                                        <span class="musichive-playlist-entry-title-text">...</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- upload -->
+                                                
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-icon">
+                                                    <span class="glyphicon glyphicon-upload musichive-table-cell"></span>
+                                                </div>
+                                                
+                                                <!-- upload cancel -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-abort hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- upload start -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-start hide">
+                                                    <span class="musichive-table-cell">Upload</span>
+                                                </div>
+
+                                                <!-- upload progress -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-upload-song-progress hide">
+                                                    <span class="musichive-table-cell">0%</span>
+                                                </div>
+                                                
+                                                <!-- upload END -->
+                                                <!-- edit song -->
+
+                                                <!-- song remove -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-remove hide">
+                                                    <span class="glyphicon glyphicon-remove musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move up -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-up hide">
+                                                    <span class="glyphicon glyphicon-chevron-up musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- song move down -->
+                                                <div class="pull-right musichive-table-icon-container musichive-inline-table musichive-song-move-down hide">
+                                                    <span class="glyphicon glyphicon-chevron-down musichive-table-cell"></span>
+                                                </div>
+
+                                                <!-- edit song END -->
+
+                                                <input type="file" class="musichive-input-file-upload" />
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- / own playlist entries -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / playlist area including upload -->
+                    </section>
+                </div>
+                <!-- / main tab -->
+                
+                <!-- settings tab -->
+                <div id="musichive-settings" class="tab-pane fade in">
+                    <section title="musicHive Settings">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <h1>Here be dragons.</h1>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- / settings tab -->
+                
+                <!-- info tab -->
+                <div id="musichive-info" class="tab-pane fade">
+                    <section title="musicHive Info">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <h1>Here also.</h1>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- / info tab -->
+                
+            </div>
+            <!-- / tab content -->            
+        </div>
+        <!-- / main container -->
+
+        <script src="js/vendor/jquery-1.11.0.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
