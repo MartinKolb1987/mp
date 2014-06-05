@@ -173,21 +173,22 @@
         <!-- / main container -->
 
         <script src="js/vendor/jquery-1.11.0.min.js"></script>
+        <script src="js/vendor/jquery.tmpl.min.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
 
 
-<template id="entry-markup">
-    <div class="musichive-playlist-entry-container musichive-table-container">
+<script id="entry-markup" type="text/x-jQuery-tmpl">
+    <div class="musichive-playlist-entry-container musichive-table-container" track-id="${trackId}">
         <div class="musichive-table-cell musichive-playlist-entry-number">
-            2.
+            ${runnerId}.
         </div>
         <div class="musichive-table-cell musichive-playlist-draggable" draggable="true">
             <div class="musichive-inline-table">
                 <div class="musichive-table-cell musichive-playlist-entry-title">
-                    <span class="musichive-playlist-entry-title-text">...</span>
+                    <span class="musichive-playlist-entry-title-text">${title}</span>
                 </div>
             </div>
             
@@ -234,5 +235,5 @@
 
             <input type="file" class="musichive-input-file-upload" />
         </div>
-    </div>    
-</template>
+    </div>   
+</script>

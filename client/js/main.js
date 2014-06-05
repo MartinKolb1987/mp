@@ -455,19 +455,13 @@ var playList = {
     renderPlaylist: function(data){
         var that = this;
         var entryMarkup = '';
-        console.log(data.musicHivePlaylist.prio1.t_artist);
 
-        // schleife
-        
-        entryMarkup = '';
-        entryMarkup = $('#entry-markup').html();
-        entryMarkup = $(entryMarkup).attr('track-id', 68453865);
+        var title = data.musicHivePlaylist.prio1.t_artist;
+        var trackId = data.musicHivePlaylist.prio1.t_id;
 
-        this.allEntriesWrapper.append(entryMarkup);
+        // this.allEntriesWrapper.append(entryMarkup);
+        $("#entry-markup").tmpl({runnerId: 1234, title: title, trackId: trackId}).appendTo("#all-entries");
 
-        // end schleife
-
-        // entryMarkup = entryMarkup.attr('track-id', 68453865);
     },
 
     removeSong: function(clickedElement){
