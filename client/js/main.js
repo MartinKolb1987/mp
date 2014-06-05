@@ -481,6 +481,7 @@ var playList = {
     removeSong: function(clickedElement){
             var song = $(clickedElement).parents('.musichive-playlist-entry-container');
             var trackId = song.attr('data-trackid');
+            console.log(trackId);
     		song.remove();
 
             $.ajax({
