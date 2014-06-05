@@ -19,17 +19,17 @@ $(document).ready(function() {
         $('.fileinput').fileinput('clear');
     });
     
-    $('#musichive-show-user').click(function() {
-        $(this).toggleClass('hide');
-        $('#musichive-user-image-container').toggleClass('hide');
-        $('#musichive-player-heading-dj').toggleClass('hide');
-    });
+    // $('#musichive-show-user').click(function() {
+    //     $(this).toggleClass('hide');
+    //     $('#musichive-user-image-container').toggleClass('hide');
+    //     $('#musichive-player-heading-dj').toggleClass('hide');
+    // });
     
-    $('#musichive-user-image-container').click(function() {
-        $(this).toggleClass('hide');
-        $('#musichive-show-user').toggleClass('hide');
-        $('#musichive-player-heading-dj').toggleClass('hide');
-    });
+    // $('#musichive-user-image-container').click(function() {
+    //     $(this).toggleClass('hide');
+    //     $('#musichive-show-user').toggleClass('hide');
+    //     $('#musichive-player-heading-dj').toggleClass('hide');
+    // });
     
     $('#musichive-user-image-upload').click(function() {
         $('#musichive-nav-tabs-settings a').tab('show');
@@ -42,7 +42,7 @@ $(document).ready(function() {
     watchDeviceOrientation = window.matchMedia("(orientation: portrait)");
     
     watchDeviceOrientation.addListener(function(m) {
-        window.location.reload();
+        // window.location.reload();
     });
     
     window.onresize = function(event) {
