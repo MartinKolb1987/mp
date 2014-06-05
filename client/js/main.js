@@ -456,20 +456,16 @@ var playList = {
         var runner = 1;
         
         if ($.isEmptyObject(data)) {
-                for (var i=1; i<6; i++) {
-                     $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
-                }
+            for (var i=1; i<6; i++) {
+                $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
+            }
         } else {
             var i = 1;
             $.each(data.musicHivePlaylist, function(key, value) {
                 console.log(i);
                 i++;
-
-
-           
-
-            $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
-        });
+                $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
+            });
             for (i=i; i<6; i++) {
                 $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
             }
@@ -482,12 +478,15 @@ var playList = {
             var song = $(clickedElement).parents('.musichive-playlist-entry-container');
             var trackId = song.attr('data-trackid');
             console.log(trackId);
-    		song.remove();
+            song.remove();
+
+
+
 
             $.ajax({
                 type: 'POST',
                 url: 'upload.php', // has to be changed
-                data: { 
+                data: {
                     type: 'removeSong',
                     trackId: trackId
                 }
