@@ -35,7 +35,8 @@ $(document).ready(function() {
         $('#musichive-nav-tabs-settings a').tab('show');
     });
 
-    // init uploader
+    currentlyPlaying.init();
+
     uploader.init();
 
     // Add a media query change listener
@@ -55,6 +56,105 @@ $(document).ready(function() {
     scrollInfoText();
     checkPlaylistEntries();
 });
+
+
+var currentlyPlaying = {
+
+    pollingIntervalValue: 5000,
+    currentTrackId: 0,
+
+    internetAccess: '',
+    infoUsers: '',
+    trackText: '',
+    artistText: '',
+    albumText: '',
+    durationText: '',
+    userImage: '',
+
+    init: function(){
+        this.internetAccess = $('#musichive-info-internet');
+        this.infoUsers = $('#musichive-info-users');
+        this.trackText = $('#musichive-player-trackid-text');
+        this.artistText = $('#musichive-player-artist-text');
+        this.albumText = $('#musichive-player-album-text');
+        this.durationText = $('#musichive-player-duration-text');
+        this.userImage = $('#musichive-user-image');
+
+        this.getData();
+        this.pollingInterval();
+        this.setEventlistener();
+
+    },
+
+    setEventlistener: function(){
+        var that = this;
+        $('#musichive-downvote').on('click', function(){
+            that.sendDataDownvote(that.currentTrackId);
+        });
+    },
+
+    getData: function(){
+        var that = this;
+
+        $.ajax({
+            type: 'GET',
+            url: 'json/musicHiveInfo.json', // has to be changed
+        }).done(function(data) {
+            that.renderData(data);
+        }).fail(function(error){
+            alert('i´m sorry, something went wrong (get currently playing data)');
+        });
+
+    },
+
+    sendDataDownvote: function(trackId){
+
+        $.ajax({
+            type: 'POST',
+            url: 'upload.php', // has to be changed
+            data: { 
+                type: 'downvote',
+                trackId: trackId
+            }
+        }).done(function(data) {
+            console.log('success downvote');
+        }).fail(function(error){
+            alert('i´m sorry, something went wrong (send currently playing data downvote)');
+        });
+    },
+
+    renderData: function(data){
+        if(data.musicHiveInfo.status.internet_access){
+            this.internetAccess.text('Ja');
+        } else {
+            this.internetAccess.text('Nein');
+        }
+
+        this.infoUsers.text(data.musicHiveInfo.status.users);
+        this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
+        this.artistText.text(data.musicHiveInfo.currentlyPlaying.t_artist);
+        this.albumText.text(data.musicHiveInfo.currentlyPlaying.t_album);
+        this.durationText.text(data.musicHiveInfo.currentlyPlaying.t_length);
+
+        if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
+            this.userImage.css('background-image', 'url(' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
+        } else {
+            this.userImage.css('background-image', 'url(img/user-image.jpg)');
+        }
+
+        this.currentTrackId  = data.musicHiveInfo.currentlyPlaying.t_id;
+    },
+
+    pollingInterval: function(){
+        var that = this;
+        setInterval(function(){
+            that.getData();
+            console.log('polling currently playing');
+        }, that.pollingIntervalValue);
+
+    }
+
+};
 
 
 var uploader = {
