@@ -169,12 +169,12 @@ var uploader = {
     setEventlistener: function(){
         var that = this;
 
-        $('.musichive-upload-song-icon').on('click', function(e){
+        $('#all-entries').on('click','.musichive-upload-song-icon', function(e){
             var clickedElement = $(this);
             clickedElement.siblings('input.musichive-input-file-upload').trigger('click');
         });
 
-        $('.musichive-playlist-entry-container').on('change', 'input.musichive-input-file-upload', function(e){
+        $('#all-entries').on('change', 'input.musichive-input-file-upload', function(e){
             e.preventDefault();
             var inputElement = $(this);
             var filename = inputElement.val().split('\\').pop();
@@ -187,7 +187,7 @@ var uploader = {
 
         });
 
-        $('.musichive-upload-song-start').on('click', function(){
+        $('#all-entries').on('click', '.musichive-upload-song-icon', function(){
             var inputElement = $(this).siblings('.musichive-input-file-upload');
             var progressBar = $(this).siblings('.musichive-upload-song-progress');
             that.readFile(inputElement[0].files[0], progressBar);
@@ -197,7 +197,7 @@ var uploader = {
             progressBar.removeClass('hide');
         });
 
-        $('.musichive-upload-song-abort').on('click', function(){
+        $('#all-entries').on('click', '.musichive-upload-song-abort',function(){
             var inputElement = $(this).siblings('.musichive-input-file-upload');
             $(this).siblings('.musichive-upload-song-icon').removeClass('hide');
             $(this).siblings('.musichive-upload-song-start').addClass('hide');
@@ -453,14 +453,22 @@ var playList = {
     },
 
     renderPlaylist: function(data){
-        var that = this;
-        var entryMarkup = '';
+        var runner = 1;
+        
+         if ($.isEmptyObject(data)) {
+                for (var i=1; i<6; i++) {
+                     $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
+                }
+            }
 
-        var title = data.musicHivePlaylist.prio1.t_artist;
-        var trackId = data.musicHivePlaylist.prio1.t_id;
+      /*  $.each(data.musicHivePlaylist, function(key, value) {
+            console.log(key, value.t_artist);
+           
 
-        // this.allEntriesWrapper.append(entryMarkup);
-        $("#entry-markup").tmpl({runnerId: 1234, title: title, trackId: trackId}).appendTo("#all-entries");
+            $("#entry-upload-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
+        }); */
+
+        
 
     },
 
