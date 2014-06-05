@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 var currentlyPlaying = {
 
-    pollingIntervalValue: 5000,
+    pollingIntervalValue: 50000,
     currentTrackId: 0,
 
     internetAccess: '',
@@ -187,7 +187,7 @@ var uploader = {
 
         });
 
-        $('#all-entries').on('click', '.musichive-upload-song-icon', function(){
+        $('#all-entries').on('click', '.musichive-upload-song-start', function(){
             var inputElement = $(this).siblings('.musichive-input-file-upload');
             var progressBar = $(this).siblings('.musichive-upload-song-progress');
             that.readFile(inputElement[0].files[0], progressBar);
