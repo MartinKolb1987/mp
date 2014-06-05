@@ -55,7 +55,7 @@ $(document).ready(function() {
     toggleBackground();
     scrollInfoText();
     checkPlaylistEntries();
-	song();
+	playList.init();
 });
 
 
@@ -159,6 +159,7 @@ var currentlyPlaying = {
 
 
 var uploader = {
+
     allowedFileTypes: ['audio/mp3', 'audio/mpeg'],
 
     init: function(){
@@ -404,14 +405,100 @@ function dragPlaylistEntry(event) {
     console.log(event);
 }
 
-function song() {
-	$('.musichive-song-remove').click(function() {
-		$(this).parents('.musichive-playlist-entry-container').remove();
-	});
-	
-	request: function request() {
-		console.log ("asdad");
-	}
-	
-	request();
+var playList = {
+
+    allEntriesWrapper: $('#all-entries'),
+    entryTemplate: $('#entry-markup'),
+
+    init: function(){
+
+        this.getPlaylist();
+        this.setEventlistener();
+    },
+
+    setEventlistener: function(){
+        var that = this;
+
+        // remove song
+    	$('#all-entries').on('click', '.musichive-song-remove', function() {
+            that.removeSong(this);
+        });
+
+        // song move up
+        $('#all-entries').on('click', '.musichive-song-move-up', function() {
+            that.moveSongUp(this);
+        });
+
+        // song move up
+        $('#all-entries').on('click', '.musichive-song-move-down', function() {
+            that.moveSongDown(this);
+        });
+        // $('.musichive-song-remove').click(function() {
+        //     $(this).parents('.musichive-playlist-entry-container').remove();
+        // });
+    },
+
+    getPlaylist: function(){
+        // ajax request
+        var that = this;
+
+        $.ajax({
+            type: 'GET',
+            url: 'json/musicHivePlaylist.json', // has to be changed
+        }).done(function(data) {
+            that.renderPlaylist(data);
+        }).fail(function(error){
+            alert('i´m sorry, something went wrong (get playlist data)');
+        });
+    },
+
+    renderPlaylist: function(data){
+        var that = this;
+        var entryMarkup = '';
+        console.log(data.musicHivePlaylist.prio1.t_artist);
+
+        // schleife
+        
+        entryMarkup = '';
+        entryMarkup = $('#entry-markup').html();
+        entryMarkup = $(entryMarkup).attr('track-id', 68453865);
+
+        this.allEntriesWrapper.append(entryMarkup);
+
+        // end schleife
+
+        // entryMarkup = entryMarkup.attr('track-id', 68453865);
+    },
+
+    removeSong: function(clickedElement){
+            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
+            var trackId = song.attr('data-trackid');
+    		song.remove();
+
+            $.ajax({
+                type: 'POST',
+                url: 'upload.php', // has to be changed
+                data: { 
+                    type: 'removeSong',
+                    trackId: trackId
+                }
+            }).done(function(data) {
+                console.log('song removed');
+                // that.renderData(data);
+            }).fail(function(error){
+                alert('i´m sorry, something went wrong (get playlist data)');
+            });
+
+    },
+
+    moveSongUp: function(){
+            console.log('move song up');
+
+    },
+
+    moveSongDown: function(){
+            console.log('move song down');
+    }
+
+
 }
