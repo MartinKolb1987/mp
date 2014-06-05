@@ -455,19 +455,25 @@ var playList = {
     renderPlaylist: function(data){
         var runner = 1;
         
-         if ($.isEmptyObject(data)) {
+        if ($.isEmptyObject(data)) {
                 for (var i=1; i<6; i++) {
                      $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
                 }
-            }
+        } else {
+            var i = 1;
+            $.each(data.musicHivePlaylist, function(key, value) {
+                console.log(i);
+                i++;
 
-      /*  $.each(data.musicHivePlaylist, function(key, value) {
-            console.log(key, value.t_artist);
+
            
 
-            $("#entry-upload-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
-        }); */
-
+            $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
+        });
+            for (i=i; i<6; i++) {
+                $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
+            }
+        }
         
 
     },
