@@ -55,6 +55,7 @@ $(document).ready(function() {
     toggleBackground();
     scrollInfoText();
     checkPlaylistEntries();
+	song();
 });
 
 
@@ -401,4 +402,16 @@ function scrollInfoText() {
 
 function dragPlaylistEntry(event) {
     console.log(event);
+}
+
+function song() {
+	$('.musichive-song-remove').click(function() {
+		$(this).parents('.musichive-playlist-entry-container').remove();
+	});
+	
+	request: function request() {
+		console.log ("asdad");
+	}
+	
+	request();
 }
