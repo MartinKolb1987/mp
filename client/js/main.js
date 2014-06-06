@@ -462,11 +462,7 @@ var playList = {
         } else {
             var i = 1;
             $.each(data.musicHivePlaylist, function(key, value) {
-                console.log(i);
                 i++;
-
-
-           
 
             $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
         });
@@ -481,32 +477,69 @@ var playList = {
     removeSong: function(clickedElement){
             var song = $(clickedElement).parents('.musichive-playlist-entry-container');
             var trackId = song.attr('data-trackid');
-            console.log(trackId);
-    		song.remove();
+            song.remove();
+            
 
-            $.ajax({
-                type: 'POST',
-                url: 'upload.php', // has to be changed
-                data: { 
-                    type: 'removeSong',
-                    trackId: trackId
-                }
-            }).done(function(data) {
-                console.log('song removed');
-                // that.renderData(data);
-            }).fail(function(error){
-                alert('i´m sorry, something went wrong (get playlist data)');
+        
+
+            $("#entry-upload-markup").tmpl({runnerId: 0}).appendTo("#all-entries");
+            
+            var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
+
+            var i = 1;
+            $.each(getAllEntries, function(key, value) {
+                $(value).text(i++ + '.');
             });
 
+            
+
+            $.ajax({
+                    type: 'POST',
+                    url: 'upload.php', // has to be changed
+                    data: { 
+                        type: 'removeSong',
+                        trackId: trackId
+                    }
+                }).done(function(data) {
+                    console.log('song removed');
+                    // that.renderData(data);
+                }).fail(function(error){
+                    alert('i´m sorry, something went wrong (get playlist data)');
+                });
     },
 
-    moveSongUp: function(){
-            console.log('move song up');
+    moveSongUp: function(clickedElement){
+            var prev = $(clickedElement).parents('.musichive-playlist-entry-container').prev();
+            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
+            var trackId = song.attr('data-trackid');
+            prev.detach();
+            //$(prev).appendTo('#all-entries');
+            $(song).after(prev);
+
+            // Durchnummieren
+            var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
+            var i = 1;
+            $.each(getAllEntries, function(key, value) {
+                $(value).text(i++ + '.');
+            });
+
 
     },
 
-    moveSongDown: function(){
-            console.log('move song down');
+    moveSongDown: function(clickedElement){
+            var next = $(clickedElement).parents('.musichive-playlist-entry-container').next();
+            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
+            var trackId = song.attr('data-trackid');
+            next.detach();
+            //$(prev).appendTo('#all-entries');
+            $(song).before(next);
+
+            // Durchnummieren
+            var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
+            var i = 1;
+            $.each(getAllEntries, function(key, value) {
+                $(value).text(i++ + '.');
+            });
     }
 
 
