@@ -13,31 +13,9 @@ $(document).ready(function() {
         });
     });
     
-    $('#musichive-playlist-input-submit').click(function() {
-        var title = $('.fileinput-filename').html();
-        addNewPlaylistEntry(title);
-        $('.fileinput').fileinput('clear');
-    });
-    
-    // $('#musichive-show-user').click(function() {
-    //     $(this).toggleClass('hide');
-    //     $('#musichive-user-image-container').toggleClass('hide');
-    //     $('#musichive-player-heading-dj').toggleClass('hide');
-    // });
-    
-    // $('#musichive-user-image-container').click(function() {
-    //     $(this).toggleClass('hide');
-    //     $('#musichive-show-user').toggleClass('hide');
-    //     $('#musichive-player-heading-dj').toggleClass('hide');
-    // });
-    
     $('#musichive-user-image-upload').click(function() {
         $('#musichive-nav-tabs-settings a').tab('show');
     });
-
-    currentlyPlaying.init();
-
-    uploader.init();
 
     // Add a media query change listener
     watchDeviceOrientation = window.matchMedia("(orientation: portrait)");
@@ -49,13 +27,16 @@ $(document).ready(function() {
     window.onresize = function(event) {
         toggleBackground();
         scrollInfoText();
-        checkPlaylistEntries();
     }
     
+    // init all needed stuff
+    currentlyPlaying.init();
+    uploader.init();
+    playList.init();
+
+    // background and scroll info text
     toggleBackground();
     scrollInfoText();
-    checkPlaylistEntries();
-	playList.init();
 });
 
 
@@ -84,7 +65,6 @@ var currentlyPlaying = {
         this.getData();
         this.pollingInterval();
         this.setEventlistener();
-
     },
 
     setEventlistener: function(){
@@ -242,7 +222,7 @@ var uploader = {
     },
 
     uploadFile: function(fileData, progressBar){
-        console.log(fileData);
+        // console.log(fileData);
         var progressBarText = progressBar.find('span');
         var formData = new FormData();
         var client = new XMLHttpRequest();
@@ -255,7 +235,7 @@ var uploader = {
         };
 
         client.onload = function(e) {
-            console.log(e.target.responseText);
+            // console.log(e.target.responseText);
             progressBarText.text('100%');
             progressBar.addClass('hide');
             progressBar.siblings('.musichive-song-remove').removeClass('hide');
@@ -277,133 +257,6 @@ var uploader = {
         return (window.File && window.FileReader && window.FileList && window.Blob);
     }
 };
-
-
-function deleteTrack(element) {
-    
-    function deleteListElement() {
-        $('#'+elementContainer).addClass('musichive-hide');
-        setTimeout("$('#"+elementContainer+"').remove()", 300);
-        setTimeout("checkPlaylistEntries();", 300);
-    }
-    if ($('#'+elementContainer).hasClass('musichive-playing')) {
-        if (confirm('This track is currently playing! Are you sure you want to delete it? This will stop the playback.')) {
-            deleteListElement();
-        } else {
-            // Do nothing!
-        }
-    } else {
-        deleteListElement();
-    }
-    return false;
-}
-
-function addNewPlaylistEntry(title) {
-    $.get('view-playlist-entry.html', function(data) {
-        $('#musichive-playlist-entrypoint').append(data);
-        document.getElementById('musichive-new-dragentity').addEventListener('dragstart', function (e) {
-            // get container element
-            var elementContainer = $(this).parent().attr('id');
-            e.dataTransfer.effectAllowed = 'copy';
-            e.dataTransfer.setData('text/html', elementContainer);
-        }, false);
-        $('#musichive-new-title').html(title);
-        $('#musichive-new-title').attr('id', '');
-        $('#musichive-new-dragentity').attr('id', '');
-        $('#musichive-playlist-entry-99').removeClass('musichive-hide');
-        checkPlaylistEntries();
-    });
-}
-
-function toggleBackground() {
-    if($(window).width() < 1500) {
-        $('#musichive-background').removeClass('musichive-hex');
-        $('body').removeClass('musichive-bg');
-    } else {
-        $('#musichive-background').addClass('musichive-hex');
-        $('body').addClass('musichive-bg');
-    }
-}
-
-function checkPlaylistEntries() {
-    
-    // --- check if text scrolling is necessary ---
-    $('.musichive-playlist-entry-title').each(function() {
-        // console.log($(this).width() + ' vs ' + $(this).children([0]).width());
-        if ($(this).width() < $(this).children(':first').width()) {
-            $(this).addClass('marquee');
-        } else {
-            $(this).removeClass('marquee');
-        }
-    });    
-    
-    // --- count playlist items and trigger text change ---
-    var counter = 0;
-    $('.musichive-playlist-entry-container').each(function() {
-        counter++;
-        if ($(this).attr('id') != 'musichive-playlist-entry-'+counter) {
-            console.log($(this).attr('id'));
-            $(this).children(':first').html(counter+'.');
-        }
-    });
-    
-    if (counter == 5) {
-        $('#musichive-playlist-add-header').html('<p><strong>Your playlist is currently full :-) Happy listening!</strong></p>');
-        $('#musichive-playlist-input-form').addClass('hide');
-    } else {
-        $('#musichive-playlist-add-header').html('<p><strong>You can add <span id="musichive-playlist-addno"></span>:</strong></p>');
-        $('#musichive-playlist-input-form').removeClass('hide');
-    }
-    
-    if (counter == 4) {
-        $('#musichive-playlist-addno').html('one more track');
-    }
-    
-    if (counter == 3) {
-        $('#musichive-playlist-addno').html('two more tracks');
-    }
-    
-    if (counter == 2) {
-        $('#musichive-playlist-addno').html('three more tracks');
-    }
-    
-    if (counter == 1) {
-        $('#musichive-playlist-addno').html('four more tracks');
-    }
-    
-    if (counter == 0) {
-        $('#musichive-playlist-addno').html('five more tracks');
-    }
-}
-
-
-function scrollInfoText() {
-    
-    // scroll text if it is too long
-    
-    if ($('#musichive-player-trackid').width() < $('#musichive-player-trackid-text').width()) {
-        $('#musichive-player-trackid').addClass('marquee');
-    } else {
-        $('#musichive-player-trackid').removeClass('marquee');
-    }
-    
-    if ($('#musichive-player-artist').width() < $('#musichive-player-artist-text').width()) {
-        $('#musichive-player-artist').addClass('marquee');
-    } else {
-        $('#musichive-player-artist').removeClass('marquee');
-    }
-    
-    if ($('#musichive-player-album').width() < $('#musichive-player-album-text').width()) {
-        $('#musichive-player-album').addClass('marquee');
-    } else {
-        $('#musichive-player-album').removeClass('marquee');
-    }
-}
-
-
-function dragPlaylistEntry(event) {
-    console.log(event);
-}
 
 var playList = {
 
@@ -480,9 +333,6 @@ var playList = {
             var trackId = song.attr('data-trackid');
 
             song.remove();
-            
-            console.log('Test');
-        
 
             $("#entry-upload-markup").tmpl({runnerId: 0}).appendTo("#all-entries");
             
@@ -491,26 +341,21 @@ var playList = {
             var i = 1;
             $.each(getAllEntries, function(key, value) {
                 $(value).text(i++ + '.');
-
-            console.log(trackId);
-            song.remove();
             });
 
-            
-
             $.ajax({
-                    type: 'POST',
-                    url: 'upload.php', // has to be changed
-                    data: { 
-                        type: 'removeSong',
-                        trackId: trackId
-                    }
-                }).done(function(data) {
-                    console.log('song removed');
-                    // that.renderData(data);
-                }).fail(function(error){
-                    alert('i´m sorry, something went wrong (get playlist data)');
-                });
+                type: 'POST',
+                url: 'upload.php', // has to be changed
+                data: { 
+                    type: 'removeSong',
+                    trackId: trackId
+                }
+            }).done(function(data) {
+                console.log('song removed');
+                // that.renderData(data);
+            }).fail(function(error){
+                alert('i´m sorry, something went wrong (get playlist data)');
+            });
     },
 
     moveSongUp: function(clickedElement){
@@ -554,26 +399,57 @@ var playList = {
             var i = 1;
             $.each(getAllEntries, function(key, value) {
                 $(value).text(i++ + '.');
-            
-
             });
 
             $.ajax({
-                    type: 'POST',
-                    url: 'upload.php', // has to be changed
-                    data: { 
-                        type: 'swapSong',
-                        songIds: [
-                            songIdOne,
-                            songIdTwo
-                        ]
-                    }
-                }).done(function(data) {
-                    console.log('song swaped');
-                    // that.renderData(data);
-                }).fail(function(error){
-                    alert('i´m sorry, something went wrong (get playlist data)');
-                });
+                type: 'POST',
+                url: 'upload.php', // has to be changed
+                data: { 
+                    type: 'swapSong',
+                    songIds: [
+                        songIdOne,
+                        songIdTwo
+                    ]
+                }
+            }).done(function(data) {
+                console.log('song swaped');
+                // that.renderData(data);
+            }).fail(function(error){
+                alert('i´m sorry, something went wrong (get playlist data)');
+            });
 
+    }
+}
+
+function toggleBackground() {
+    if($(window).width() < 1500) {
+        $('#musichive-background').removeClass('musichive-hex');
+        $('body').removeClass('musichive-bg');
+    } else {
+        $('#musichive-background').addClass('musichive-hex');
+        $('body').addClass('musichive-bg');
+    }
+}
+
+function scrollInfoText() {
+    
+    // scroll text if it is too long
+    
+    if ($('#musichive-player-trackid').width() < $('#musichive-player-trackid-text').width()) {
+        $('#musichive-player-trackid').addClass('marquee');
+    } else {
+        $('#musichive-player-trackid').removeClass('marquee');
+    }
+    
+    if ($('#musichive-player-artist').width() < $('#musichive-player-artist-text').width()) {
+        $('#musichive-player-artist').addClass('marquee');
+    } else {
+        $('#musichive-player-artist').removeClass('marquee');
+    }
+    
+    if ($('#musichive-player-album').width() < $('#musichive-player-album-text').width()) {
+        $('#musichive-player-album').addClass('marquee');
+    } else {
+        $('#musichive-player-album').removeClass('marquee');
     }
 }
