@@ -463,14 +463,10 @@ var playList = {
             var i = 1;
             $.each(data.musicHivePlaylist, function(key, value) {
                 i++;
-<<<<<<< HEAD
 
-            $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
-        });
-=======
                 $("#entry-markup").tmpl({runnerId: runner++, title: value.t_title, trackId: value.t_id}).appendTo("#all-entries");
             });
->>>>>>> 1f2fdf4f1bdefe675852f6e8a9da21c7dfb22673
+
             for (i=i; i<6; i++) {
                 $("#entry-upload-markup").tmpl({runnerId: i}).appendTo("#all-entries");
             }
@@ -482,10 +478,10 @@ var playList = {
     removeSong: function(clickedElement){
             var song = $(clickedElement).parents('.musichive-playlist-entry-container');
             var trackId = song.attr('data-trackid');
-<<<<<<< HEAD
+
             song.remove();
             
-
+            console.log('Test');
         
 
             $("#entry-upload-markup").tmpl({runnerId: 0}).appendTo("#all-entries");
@@ -495,26 +491,9 @@ var playList = {
             var i = 1;
             $.each(getAllEntries, function(key, value) {
                 $(value).text(i++ + '.');
-=======
+
             console.log(trackId);
             song.remove();
-
-
-
-
-            $.ajax({
-                type: 'POST',
-                url: 'upload.php', // has to be changed
-                data: {
-                    type: 'removeSong',
-                    trackId: trackId
-                }
-            }).done(function(data) {
-                console.log('song removed');
-                // that.renderData(data);
-            }).fail(function(error){
-                alert('i´m sorry, something went wrong (get playlist data)');
->>>>>>> 1f2fdf4f1bdefe675852f6e8a9da21c7dfb22673
             });
 
             
@@ -535,38 +514,66 @@ var playList = {
     },
 
     moveSongUp: function(clickedElement){
-            var prev = $(clickedElement).parents('.musichive-playlist-entry-container').prev();
-            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
-            var trackId = song.attr('data-trackid');
-            prev.detach();
-            //$(prev).appendTo('#all-entries');
-            $(song).after(prev);
-
-            // Durchnummieren
-            var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
-            var i = 1;
-            $.each(getAllEntries, function(key, value) {
-                $(value).text(i++ + '.');
-            });
-
-
+           this.swapSong(clickedElement, 'up');
     },
 
     moveSongDown: function(clickedElement){
-            var next = $(clickedElement).parents('.musichive-playlist-entry-container').next();
-            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
-            var trackId = song.attr('data-trackid');
-            next.detach();
-            //$(prev).appendTo('#all-entries');
-            $(song).before(next);
+            this.swapSong(clickedElement, 'down');
+    },
+
+    swapSong: function(clickedElement, type){
+
+            var songTwo = '';
+            var songOne = '';
+
+            songOne = $(clickedElement).parents('.musichive-playlist-entry-container');
+
+            if(type === 'up'){
+                songTwo = $(clickedElement).parents('.musichive-playlist-entry-container').prev();
+            } else {
+                songTwo = $(clickedElement).parents('.musichive-playlist-entry-container').next(); 
+            }
+
+            var songIdOne = songOne.attr('data-trackid');
+            var songIdTwo = songTwo.attr('data-trackid');
+            
+            console.log(songIdOne);
+            console.log(songIdTwo);
+
+            if(type === 'up'){
+                songTwo.remove();
+                $(songOne).after(songTwo);
+            } else {
+                songTwo.remove();
+                $(songOne).before(songTwo);
+
+            }
 
             // Durchnummieren
             var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
             var i = 1;
             $.each(getAllEntries, function(key, value) {
                 $(value).text(i++ + '.');
+            
+
             });
+
+            $.ajax({
+                    type: 'POST',
+                    url: 'upload.php', // has to be changed
+                    data: { 
+                        type: 'swapSong',
+                        songIds: [
+                            songIdOne,
+                            songIdTwo
+                        ]
+                    }
+                }).done(function(data) {
+                    console.log('song swaped');
+                    // that.renderData(data);
+                }).fail(function(error){
+                    alert('i´m sorry, something went wrong (get playlist data)');
+                });
+
     }
-
-
 }
