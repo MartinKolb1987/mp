@@ -242,6 +242,8 @@ var uploader = {
             progressBar.siblings('.musichive-song-remove').removeClass('hide');
             progressBar.siblings('.musichive-song-move-up').removeClass('hide');
             progressBar.siblings('.musichive-song-move-down').removeClass('hide');
+
+            // playList.getPlaylist();
         };
 
         client.upload.onprogress = function(e) {
@@ -292,11 +294,11 @@ var playList = {
     getPlaylist: function(){
         // ajax request
         var that = this;
-
         $.ajax({
             type: 'GET',
             url: 'json/musicHivePlaylist.json', // has to be changed
         }).done(function(data) {
+            that.allEntriesWrapper.find('.musichive-playlist-entry-container').remove();
             that.renderPlaylist(data);
         }).fail(function(error){
             alert('i´m sorry, something went wrong (get playlist data)');
@@ -327,34 +329,34 @@ var playList = {
     },
 
     removeSong: function(clickedElement){
-            var song = $(clickedElement).parents('.musichive-playlist-entry-container');
-            var trackId = song.attr('data-trackid');
+        var that = this;
+        var song = $(clickedElement).parents('.musichive-playlist-entry-container');
+        var trackId = song.attr('data-trackid');
 
-            song.remove();
+        song.remove();
 
-            $("#entry-upload-markup").tmpl({runnerId: 0}).appendTo("#all-entries");
-            
-            var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
+        $("#entry-upload-markup").tmpl({runnerId: 0}).appendTo("#all-entries");
+        
+        var getAllEntries = $('.musichive-playlist-entry-container').find('.musichive-playlist-entry-number');
 
-            var i = 1;
-            $.each(getAllEntries, function(key, value) {
-                $(value).text(i++ + '.');
-            });
+        var i = 1;
+        $.each(getAllEntries, function(key, value) {
+            $(value).text(i++ + '.');
+        });
 
-            $.ajax({
-                type: 'POST',
-                url: 'upload.php', // has to be changed
-                data: { 
-                    type: 'removeTrack',
-                    trackId: trackId
-                }
-            }).done(function(data) {
-                console.log(data);
-                console.log('song removed');
-                // that.renderData(data);
-            }).fail(function(error){
-                alert('i´m sorry, something went wrong (get playlist data)');
-            });
+        $.ajax({
+            type: 'POST',
+            url: 'upload.php', // has to be changed
+            data: { 
+                type: 'removeTrack',
+                trackId: trackId
+            }
+        }).done(function(data) {
+            console.log(data);
+            // that.getPlaylist();
+        }).fail(function(error){
+            alert('i´m sorry, something went wrong (get playlist data)');
+        });
     },
 
     moveTrackUp: function(clickedElement){
@@ -366,7 +368,7 @@ var playList = {
     },
 
     swapTrack: function(clickedElement, type){
-
+            var that = this;
             var trackTwo = '';
             var trackOne = '';
 
@@ -412,14 +414,13 @@ var playList = {
                 }
             }).done(function(data) {
                 console.log(data);
-                // console.log('song swaped');
-                // that.renderData(data);
+                // that.getPlaylist();
             }).fail(function(error){
                 alert('i´m sorry, something went wrong (get playlist data)');
             });
 
     }
-}
+};
 
 function toggleBackground() {
     if($(window).width() < 1500) {
