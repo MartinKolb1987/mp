@@ -94,7 +94,7 @@ var currentlyPlaying = {
             type: 'POST',
             url: 'upload.php', // has to be changed
             data: { 
-                type: 'downvote',
+                type: 'downvoteTrack',
                 trackId: trackId
             }
         }).done(function(data) {
@@ -227,6 +227,7 @@ var uploader = {
         var formData = new FormData();
         var client = new XMLHttpRequest();
         
+        formData.append('type', 'uploadTrack');
         formData.append('file', fileData);
 
 
@@ -235,7 +236,7 @@ var uploader = {
         };
 
         client.onload = function(e) {
-            // console.log(e.target.responseText);
+            console.log(e.target.responseText);
             progressBarText.text('100%');
             progressBar.addClass('hide');
             progressBar.siblings('.musichive-song-remove').removeClass('hide');
@@ -286,9 +287,6 @@ var playList = {
         $('#all-entries').on('click', '.musichive-song-move-down', function() {
             that.moveTrackDown(this);
         });
-        // $('.musichive-song-remove').click(function() {
-        //     $(this).parents('.musichive-playlist-entry-container').remove();
-        // });
     },
 
     getPlaylist: function(){
@@ -347,10 +345,11 @@ var playList = {
                 type: 'POST',
                 url: 'upload.php', // has to be changed
                 data: { 
-                    type: 'removeSong',
+                    type: 'removeTrack',
                     trackId: trackId
                 }
             }).done(function(data) {
+                console.log(data);
                 console.log('song removed');
                 // that.renderData(data);
             }).fail(function(error){
@@ -413,7 +412,7 @@ var playList = {
                 }
             }).done(function(data) {
                 console.log(data);
-                console.log('song swaped');
+                // console.log('song swaped');
                 // that.renderData(data);
             }).fail(function(error){
                 alert('i´m sorry, something went wrong (get playlist data)');
