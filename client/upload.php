@@ -2,4 +2,10 @@
 
 // base64encoded string
 // print $_FILES['file']
-print 'upload successful';
+// 
+// 
+
+// swap song
+print $_POST['type'];
+print $_POST['trackIds'][0];
+print $_POST['trackIds'][1];

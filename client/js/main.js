@@ -279,12 +279,12 @@ var playList = {
 
         // song move up
         $('#all-entries').on('click', '.musichive-song-move-up', function() {
-            that.moveSongUp(this);
+            that.moveTrackUp(this);
         });
 
         // song move up
         $('#all-entries').on('click', '.musichive-song-move-down', function() {
-            that.moveSongDown(this);
+            that.moveTrackDown(this);
         });
         // $('.musichive-song-remove').click(function() {
         //     $(this).parents('.musichive-playlist-entry-container').remove();
@@ -358,39 +358,39 @@ var playList = {
             });
     },
 
-    moveSongUp: function(clickedElement){
-           this.swapSong(clickedElement, 'up');
+    moveTrackUp: function(clickedElement){
+           this.swapTrack(clickedElement, 'up');
     },
 
-    moveSongDown: function(clickedElement){
-            this.swapSong(clickedElement, 'down');
+    moveTrackDown: function(clickedElement){
+            this.swapTrack(clickedElement, 'down');
     },
 
-    swapSong: function(clickedElement, type){
+    swapTrack: function(clickedElement, type){
 
-            var songTwo = '';
-            var songOne = '';
+            var trackTwo = '';
+            var trackOne = '';
 
-            songOne = $(clickedElement).parents('.musichive-playlist-entry-container');
+            trackOne = $(clickedElement).parents('.musichive-playlist-entry-container');
 
             if(type === 'up'){
-                songTwo = $(clickedElement).parents('.musichive-playlist-entry-container').prev();
+                trackTwo = $(clickedElement).parents('.musichive-playlist-entry-container').prev();
             } else {
-                songTwo = $(clickedElement).parents('.musichive-playlist-entry-container').next(); 
+                trackTwo = $(clickedElement).parents('.musichive-playlist-entry-container').next(); 
             }
 
-            var songIdOne = songOne.attr('data-trackid');
-            var songIdTwo = songTwo.attr('data-trackid');
+            var trackIdOne = trackOne.attr('data-trackid');
+            var trackIdTwo = trackTwo.attr('data-trackid');
             
-            console.log(songIdOne);
-            console.log(songIdTwo);
+            console.log(trackIdOne);
+            console.log(trackIdTwo);
 
             if(type === 'up'){
-                songTwo.remove();
-                $(songOne).after(songTwo);
+                trackTwo.remove();
+                $(trackOne).after(trackTwo);
             } else {
-                songTwo.remove();
-                $(songOne).before(songTwo);
+                trackTwo.remove();
+                $(trackOne).before(trackTwo);
 
             }
 
@@ -405,13 +405,14 @@ var playList = {
                 type: 'POST',
                 url: 'upload.php', // has to be changed
                 data: { 
-                    type: 'swapSong',
-                    songIds: [
-                        songIdOne,
-                        songIdTwo
+                    type: 'swapTrack',
+                    trackIds: [
+                        trackIdOne,
+                        trackIdTwo
                     ]
                 }
             }).done(function(data) {
+                console.log(data);
                 console.log('song swaped');
                 // that.renderData(data);
             }).fail(function(error){
