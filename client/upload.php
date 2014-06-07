@@ -7,6 +7,7 @@ print $_POST['trackId'];
 // upload song
 print $_POST['type']; // = uploadTrack
 print $_POST['file']; // base64encoded string
+print $_POST['filename'];
 // print $_FILES['file']
 
 // remove song

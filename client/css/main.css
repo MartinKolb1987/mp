@@ -235,13 +235,33 @@ ul.nav-tabs {
     -webkit-transform: translate3d(0, 0, 0);
 }
 
-.musichive-playlist-entry-container:first-child .musichive-song-move-up{
+.musichive-playlist-entry-container .musichive-song-move-up,
+.musichive-playlist-entry-container .musichive-song-move-down,
+.musichive-playlist-entry-container .musichive-song-remove {
+    cursor: pointer;
+}
+
+.musichive-upload-entry.musichive-upload-only-first .musichive-upload-song-icon{
+    color: #1a8de6;
+    cursor: pointer;
+}
+
+.musichive-upload-entry .musichive-upload-song-icon{
+    color: #e2e2e2;
+    border-color: #e2e2e2;
+    cursor: default;
+}
+/*.musichive-playlist-entry-container.musichive-editable-entry:first-child .musichive-song-move-up{
     display: none !important;
 }
 
-.musichive-playlist-entry-container:last-child .musichive-song-move-down{
+.musichive-playlist-entry-container.musichive-editable-entry:last-child .musichive-song-move-down{
     display: none !important;
-}
+}*/
+
+/*.musichive-upload-entry{
+    background: #000 !important;
+}*/
 
 
 .musichive-hide {
