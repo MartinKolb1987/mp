@@ -179,6 +179,12 @@ ul.nav-tabs {
     cursor: pointer;
 }
 
+#musichive-downvote.disabled div{
+    color: #e2e2e2 !important;
+    border-color: #e2e2e2;
+    cursor: default;
+}
+
 #musichive-show-user-inner {
     margin-left: 10px;
 }

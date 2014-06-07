@@ -73,7 +73,9 @@ var currentlyPlaying = {
     setEventlistener: function(){
         var that = this;
         $('#musichive-downvote').on('click', function(){
-            that.downvote(that.currentTrackId);
+            if(!$(this).hasClass('disabled')){
+                that.downvote(that.currentTrackId);
+            }
         });
     },
 
@@ -101,6 +103,7 @@ var currentlyPlaying = {
             }
         }).done(function(data) {
             console.log('success downvote');
+            $('#musichive-downvote').addClass('disabled');
         }).fail(function(error){
             alert('i´m sorry, something went wrong (send currently playing data downvote)');
         });
