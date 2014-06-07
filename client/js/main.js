@@ -73,7 +73,7 @@ var currentlyPlaying = {
     setEventlistener: function(){
         var that = this;
         $('#musichive-downvote').on('click', function(){
-            that.sendDataDownvote(that.currentTrackId);
+            that.downvote(that.currentTrackId);
         });
     },
 
@@ -91,8 +91,7 @@ var currentlyPlaying = {
 
     },
 
-    sendDataDownvote: function(trackId){
-
+    downvote: function(trackId){
         $.ajax({
             type: 'POST',
             url: 'upload.php', // has to be changed
