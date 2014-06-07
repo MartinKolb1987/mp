@@ -251,18 +251,6 @@ ul.nav-tabs {
     border-color: #e2e2e2;
     cursor: default;
 }
-/*.musichive-playlist-entry-container.musichive-editable-entry:first-child .musichive-song-move-up{
-    display: none !important;
-}
-
-.musichive-playlist-entry-container.musichive-editable-entry:last-child .musichive-song-move-down{
-    display: none !important;
-}*/
-
-/*.musichive-upload-entry{
-    background: #000 !important;
-}*/
-
 
 .musichive-hide {
     opacity: 0;
