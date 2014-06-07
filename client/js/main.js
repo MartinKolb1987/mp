@@ -43,7 +43,9 @@ $(document).ready(function() {
 var currentlyPlaying = {
 
     pollingIntervalValue: 50000,
+    playlistUpdateIntervalValue: 1000,
     currentTrackId: 0,
+    oldTrackId: 0,
 
     internetAccess: '',
     infoUsers: '',
@@ -64,6 +66,7 @@ var currentlyPlaying = {
 
         this.getCurrentlyPlayingData();
         this.pollingInterval();
+        this.playlistUpdateInterval();
         this.setEventlistener();
     },
 
@@ -133,6 +136,16 @@ var currentlyPlaying = {
             console.log('polling currently playing');
         }, that.pollingIntervalValue);
 
+    },
+
+    playlistUpdateInterval: function(){
+        var that = this;
+        setInterval(function(){
+            if(that.currentTrackId !== that.oldTrackId){
+                playList.getPlaylist();
+                that.oldTrackId = that.currentTrackId;
+            }
+        }, that.playlistUpdateIntervalValue);
     }
 
 };
