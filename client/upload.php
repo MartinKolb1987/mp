@@ -18,3 +18,9 @@ print $_POST['trackId'];
 print $_POST['type']; // = swapTrack
 print $_POST['trackIds'][0]; // track 1
 print $_POST['trackIds'][1]; // track 2
+
+// upload user image
+print $_POST['type']; // = uploadUserImage
+print $_POST['userImageFile']; // base64encoded string
+print $_POST['userImageFilename'];
+// print $_FILES['userImageFile']

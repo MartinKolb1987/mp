@@ -33,6 +33,7 @@ $(document).ready(function() {
     currentlyPlaying.init();
     playList.init();
     uploader.init();
+    userImage.init();
 
     // background and scroll info text
     toggleBackground();
@@ -280,6 +281,151 @@ var uploader = {
         return (window.File && window.FileReader && window.FileList && window.Blob);
     }
 };
+
+
+var userImage = {
+
+    allowedFileTypes: ['image/jpeg', 'image/png', 'image/gif'],
+    filename: '',
+
+    init: function(){
+        this.getUserImageData();
+        this.setEventlistener();
+    },
+    
+    setEventlistener: function(){
+        var that = this;
+
+        $('#musichive-user-settings-image-upload').on('click','#musichive-select-user-image', function(e){
+            var clickedElement = $(this);
+            clickedElement.siblings('input#musichive-upload-user-image-file').trigger('click');
+        });
+
+        $('#musichive-user-settings-image-upload').on('change', 'input#musichive-upload-user-image-file', function(e){
+            e.preventDefault();
+            var inputElement = $(this);
+            that.filename = inputElement.val().split('\\').pop();
+
+            if(that.checkFile(inputElement)){
+                $('#musichive-user-image-upload-file-text-wrapper').removeClass('hide');
+                $('#musichive-user-image-upload-file-text').text(that.filename);
+                $('#musichive-select-user-image').addClass('hide');
+                $('#musichive-user-image-confirm').removeClass('hide');
+            }
+
+        });
+
+        $('#musichive-user-settings-image-upload').on('click', '#musichive-user-image-upload-start', function(){
+            var inputElement = $('#musichive-upload-user-image-file');
+            var progressBar = $('#musichive-user-image-upload-file-text');
+            that.readFile(inputElement[0].files[0], progressBar);
+
+            $('#musichive-user-image-upload-start').addClass('hide');
+            $('#musichive-user-image-upload-cancel').addClass('hide');
+        });
+
+        $('#musichive-user-settings-image-upload').on('click', '#musichive-user-image-upload-cancel',function(){
+            $('#musichive-select-user-image').removeClass('hide');
+            $('#musichive-user-image-confirm').addClass('hide');
+
+            // clear input field it´s not enough
+            // better --> remove and add input field again
+            $('#musichive-upload-user-image-file').remove();
+            $('#musichive-user-settings-image-upload').append('<input type="file" id="musichive-upload-user-image-file" />');
+        });
+
+    },
+
+    checkFile: function(givenFile){
+        if(this.checkHtml5Api()){
+            var fileSize = givenFile[0].files[0].size;
+            var fileType = givenFile[0].files[0].type;
+
+            // check if file type is allowed
+            if($.inArray(fileType, this.allowedFileTypes) >= 0){
+                return true;
+            } else {
+                alert('file type not supported.');
+                return false;
+            }
+        } else {
+            alert('no file api exists');
+            return false;
+        }
+
+    },
+
+    readFile: function(givenFile, progressBar){
+        var that = this;
+        var fileReader = new FileReader();
+        fileReader.onload = function(){
+            that.uploadFile(fileReader.result, progressBar);
+        };
+        fileReader.readAsDataURL(givenFile);
+    },
+
+    uploadFile: function(fileData, progressBar){
+        // console.log(fileData);
+        var that = this;
+        var formData = new FormData();
+        var client = new XMLHttpRequest();
+
+        formData.append('type', 'uploadUserImage');
+        formData.append('userImageFile', fileData);
+        formData.append('userImageFilename', that.filename);
+
+
+        client.onerror = function(e) {
+            alert('error, please try again');
+        };
+
+        client.onload = function(e) {
+            console.log(e.target.responseText);
+            progressBar.text('100%');
+            $('#musichive-user-settings-image').css({'background': 'url(' + fileData + ')', 'background-size': 'cover'});
+            $('#musichive-user-image-upload-file-text-wrapper').addClass('hide');
+            $('#musichive-select-user-image').removeClass('hide');
+            $('#musichive-user-image-confirm').addClass('hide')
+            $('#musichive-user-image-upload-start').removeClass('hide');
+            $('#musichive-user-image-upload-cancel').removeClass('hide');
+
+            setTimeout(function(){
+                that.getUserImageData();
+            }, 3000);
+        };
+
+        client.upload.onprogress = function(e) {
+            var p = Math.round(100 / e.total * e.loaded);
+            progressBar.text(p + '%');
+        };
+
+        client.open('POST', 'upload.php');
+        client.send(formData);
+
+    },
+
+    checkHtml5Api: function(){
+        return (window.File && window.FileReader && window.FileList && window.Blob);
+    },
+
+    renderData: function(data){
+        $('#musichive-user-settings-image').css({'background': 'url(' + data.musicHiveUserImage.userImageUrl + ')', 'background-size': 'cover'});
+    },
+
+    getUserImageData: function(){
+        var that = this;
+        $.ajax({
+            type: 'GET',
+            url: 'json/musicHiveUserImage.json', // has to be changed
+        }).done(function(data) {
+            that.renderData(data);
+        }).fail(function(error){
+            alert('i´m sorry, something went wrong (get user image)');
+        });
+    },
+
+};
+
 
 var playList = {
 

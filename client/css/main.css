@@ -325,6 +325,74 @@ ul.nav-tabs {
     overflow: hidden;
 }
 
+#musichive-user-settings-image-wrapper{
+    width: 200px;
+    margin: 0 auto;
+}
+
+#musichive-user-settings-image{
+    /*width: 100%;*/
+    height: 200px;
+    width: 200px;
+    display: block;
+    background-image: url(../img/user-image.jpg);
+    background-size: cover;
+}
+
+#musichive-user-settings-image-upload{
+    width: 100%;
+    display: block;
+}
+
+#musichive-user-settings-image-upload #musichive-select-user-image{
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    background: white;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#musichive-user-settings-image-upload #musichive-user-image-confirm button{
+    width: 49%;
+    height: 50px;
+    text-align: center;
+    /*background: white;*/
+}
+
+#musichive-user-image-upload-file-text-wrapper{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding: 5px 10px 5px 10px;
+    display: block;
+    margin: 10px 0 10px 0;
+}
+
+#musichive-user-image-upload-cancel{
+    background: white;
+}
+
+#musichive-user-image-upload-file-text{
+    display: block;
+}
+#musichive-user-image-upload-file-text-headline{
+    display: block;
+    width: 100%;
+    font-weight: bold;
+}
+
+#musichive-user-settings-image-upload span{
+    float: left;
+    margin-right: 5px;
+    margin-top: 2px;
+}
+
+#musichive-user-settings-image-upload #musichive-upload-user-image-file{
+    display: none;
+}
+
+
 /* marquee animation */
 .marquee {
     animation: marquee 5s linear 1s infinite alternate;
