@@ -121,7 +121,23 @@ var currentlyPlaying = {
         this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
         this.artistText.text(data.musicHiveInfo.currentlyPlaying.t_artist);
         this.albumText.text(data.musicHiveInfo.currentlyPlaying.t_album);
-        this.durationText.text(data.musicHiveInfo.currentlyPlaying.t_length);
+
+        var time = data.musicHiveInfo.currentlyPlaying.t_length;
+        var minutes = Math.floor(time / 60);
+        var seconds = time - minutes * 60;
+        if(minutes > 0){
+            time = minutes + ' Min. ';
+        } 
+        if(seconds > 0){
+            time += seconds + ' Sek.';
+        }
+
+        this.durationText.text(time);
+
+        // if user has already voted track down
+        if(data.musicHiveInfo.currentlyPlaying.downvote !== 0){
+            $('#musichive-downvote').addClass('disabled');
+        }
 
         if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
             this.userImage.css('background-image', 'url(' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');

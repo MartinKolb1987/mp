@@ -6,7 +6,8 @@
             "t_title": "1R",
             "t_album": "Houyoku",
             "t_length": 225,
-            "u_picture": ""
+            "u_picture": "",
+            "downvote": 0
         },
         "status": {
             "users": "30",
