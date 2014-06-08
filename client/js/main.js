@@ -409,7 +409,7 @@ var userImage = {
     },
 
     renderData: function(data){
-        $('#musichive-user-settings-image').css({'background': 'url(' + data.musicHiveUserImage.userImageUrl + ')', 'background-size': 'cover'});
+        $('#musichive-user-settings-image').css({'background': 'url(' + data.musicHiveUserImage.url + ')', 'background-size': 'cover'});
     },
 
     getUserImageData: function(){
