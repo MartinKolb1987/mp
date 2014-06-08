@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 var currentlyPlaying = {
 
-    pollingIntervalValue: 50000,
+    pollingIntervalValue: 5000,
     playlistUpdateIntervalValue: 1000,
     currentTrackId: 0,
     oldTrackId: 0,
@@ -103,7 +103,6 @@ var currentlyPlaying = {
                 trackId: trackId
             }
         }).done(function(data) {
-            console.log('success downvote');
             $('#musichive-downvote').addClass('disabled');
         }).fail(function(error){
             alert('i´m sorry, something went wrong (send currently playing data downvote)');
@@ -278,9 +277,10 @@ var uploader = {
             progressBar.siblings('.musichive-song-move-up').removeClass('hide');
             progressBar.siblings('.musichive-song-move-down').removeClass('hide');
             progressBar.parents('.musichive-playlist-entry-container').removeClass('musichive-upload-entry').addClass('musichive-editable-entry');
-            // that.getPlaylist();
-            // currentlyPlaying.getCurrentlyPlayingData();
-            playList.afterRenderCare();
+            
+            // refresh playlist, currently playing data
+            playList.getPlaylist();
+            currentlyPlaying.getCurrentlyPlayingData();
         };
 
         client.upload.onprogress = function(e) {
@@ -546,8 +546,10 @@ var playList = {
             }
         }).done(function(data) {
             console.log(data);
-            // that.getPlaylist();
-            // currentlyPlaying.getCurrentlyPlayingData();
+
+            // refresh playlist, currently playing data
+            that.getPlaylist();
+            currentlyPlaying.getCurrentlyPlayingData();
         }).fail(function(error){
             alert('i´m sorry, something went wrong (get playlist data)');
         });
@@ -610,11 +612,11 @@ var playList = {
                     ]
                 }
             }).done(function(data) {
-                console.log(data);
-                // that.getPlaylist();
-                // currentlyPlaying.getCurrentlyPlayingData();
+                // refresh playlist, currently playing data
+                that.getPlaylist();
+                currentlyPlaying.getCurrentlyPlayingData();
             }).fail(function(error){
-                alert('i´m sorry, something went wrong (get playlist data)');
+                alert('i´m sorry, something went wrong (swap track data)');
             });
 
     },
