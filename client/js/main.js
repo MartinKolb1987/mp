@@ -151,11 +151,11 @@ var currentlyPlaying = {
             $('#musichive-downvote').addClass('disabled');
         }
 
-        if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
-            this.userImage.css('background-image', 'url(' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
-        } else {
-            this.userImage.css('background-image', 'url(img/user-image.jpg)');
-        }
+        // if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
+        this.userImage.css('background-image', 'url(' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
+        // } else {
+        //     this.userImage.css('background-image', 'url(img/user-image.jpg)');
+        // }
 
         this.currentTrackId  = data.musicHiveInfo.currentlyPlaying.t_id;
     },
