@@ -401,8 +401,8 @@ var userImage = {
         var client = new XMLHttpRequest();
 
         formData.append('type', 'uploadUserImage');
-        formData.append('userImageFile', fileData);
-        formData.append('userImageFilename', that.filename);
+        formData.append('file', fileData);
+        formData.append('filename', that.filename);
 
 
         client.onerror = function(e) {
