@@ -261,21 +261,22 @@ var uploader = {
         var that = this;
         var fileReader = new FileReader();
         fileReader.onload = function(){
-            that.uploadFile(fileReader.result, progressBar);
+            that.uploadFile(fileReader.result, givenFile, progressBar);
         };
         fileReader.readAsDataURL(givenFile);
     },
 
-    uploadFile: function(fileData, progressBar){
+    uploadFile: function(fileData, givenFile, progressBar){
         // console.log(fileData);
         var that = this;
         var progressBarText = progressBar.find('span');
         var formData = new FormData();
         var client = new XMLHttpRequest();
         
+        /*formData.append('file', fileData);
+        formData.append('filename', that.filename);*/
         formData.append('type', 'uploadTrack');
-        formData.append('file', fileData);
-        formData.append('filename', that.filename);
+		formData.append('file', givenFile);
 
 
         client.onerror = function(e) {
@@ -389,21 +390,21 @@ var userImage = {
         var that = this;
         var fileReader = new FileReader();
         fileReader.onload = function(){
-            that.uploadFile(fileReader.result, progressBar);
+            that.uploadFile(fileReader.result, givenFile, progressBar);
         };
         fileReader.readAsDataURL(givenFile);
     },
 
-    uploadFile: function(fileData, progressBar){
+    uploadFile: function(fileData, givenFile, progressBar){
         // console.log(fileData);
         var that = this;
         var formData = new FormData();
         var client = new XMLHttpRequest();
 
-        formData.append('type', 'uploadUserImage');
-        formData.append('file', fileData);
-        formData.append('filename', that.filename);
-
+        /*formData.append('file', fileData);
+        formData.append('filename', that.filename);*/
+		formData.append('type', 'uploadUserImage');
+		formData.append('file', givenFile);
 
         client.onerror = function(e) {
             alert('error, please try again (upload user image went wrong)');
