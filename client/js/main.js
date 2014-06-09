@@ -85,7 +85,7 @@ var currentlyPlaying = {
 
         $.ajax({
             type: 'GET',
-            url: '../server/client.php', // has to be changed
+            url: '/server/client.php', // has to be changed
             // url: 'json/musicHiveInfo.json', // has to be changed
             data: { 
                 type: 'getInfo'
@@ -105,7 +105,7 @@ var currentlyPlaying = {
     downvote: function(trackId){
         $.ajax({
             type: 'POST',
-            url: '../server/client.php', // has to be changed
+            url: '/server/client.php', // has to be changed
             // url: 'upload.php', // has to be changed
             data: { 
                 type: 'downvoteTrack',
@@ -301,7 +301,7 @@ var uploader = {
             progressBarText.text(p + '%');
         };
 
-        client.open('POST', '../server/client.php');
+        client.open('POST', '/server/client.php');
         // client.open('POST', 'upload.php');
         client.send(formData);
 
@@ -429,7 +429,7 @@ var userImage = {
             progressBar.text(p + '%');
         };
 
-        client.open('POST', '../server/client.php');
+        client.open('POST', '/server/client.php');
         // client.open('POST', 'upload.php');
         client.send(formData);
 
@@ -447,7 +447,7 @@ var userImage = {
         var that = this;
         $.ajax({
             type: 'GET',
-            url: '../server/client.php', // has to be changed
+            url: '/server/client.php', // has to be changed
             // url: 'json/musicHiveUserImage.json', // has to be changed
             data: { 
                 type: 'getUserImage'
@@ -501,7 +501,7 @@ var playList = {
         var that = this;
         $.ajax({
             type: 'GET',
-            url: '../server/client.php', // has to be changed
+            url: '/server/client.php', // has to be changed
             // url: 'json/musicHivePlaylist.json', // has to be changed
             data: { 
                 type: 'getPlaylist'
@@ -570,7 +570,7 @@ var playList = {
 
         $.ajax({
             type: 'POST',
-            url: '../server/client.php', // has to be changed
+            url: '/server/client.php', // has to be changed
             // url: 'upload.php', // has to be changed
             data: { 
                 type: 'removeTrack',
@@ -637,7 +637,7 @@ var playList = {
 
             $.ajax({
                 type: 'POST',
-                url: '../server/client.php', // has to be changed
+                url: '/server/client.php', // has to be changed
                 // url: 'upload.php', // has to be changed
                 data: { 
                     type: 'swapTrack',
