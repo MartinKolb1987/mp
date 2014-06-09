@@ -85,9 +85,17 @@ var currentlyPlaying = {
 
         $.ajax({
             type: 'GET',
-            url: 'json/musicHiveInfo.json', // has to be changed
+            url: '../server/client.php', // has to be changed
+            // url: 'json/musicHiveInfo.json', // has to be changed
+            data: { 
+                type: 'getInfo'
+            }
         }).done(function(data) {
-            that.renderData(data);
+            if(data.substring(0,5) === 'error'){
+                alert(data);
+            } else{
+                that.renderData(data);
+            }
         }).fail(function(error){
             alert('i´m sorry, something went wrong (get currently playing data)');
         });
@@ -97,13 +105,18 @@ var currentlyPlaying = {
     downvote: function(trackId){
         $.ajax({
             type: 'POST',
-            url: 'upload.php', // has to be changed
+            url: '../server/client.php', // has to be changed
+            // url: 'upload.php', // has to be changed
             data: { 
                 type: 'downvoteTrack',
                 trackId: trackId
             }
         }).done(function(data) {
-            $('#musichive-downvote').addClass('disabled');
+            if(data.substring(0,5) === 'error'){
+                alert(data);
+            } else{
+                $('#musichive-downvote').addClass('disabled');
+            }
         }).fail(function(error){
             alert('i´m sorry, something went wrong (send currently playing data downvote)');
         });
@@ -266,7 +279,7 @@ var uploader = {
 
 
         client.onerror = function(e) {
-            alert('error, please try again');
+            alert('error, please try again (upload track went wrong)');
         };
 
         client.onload = function(e) {
@@ -288,7 +301,8 @@ var uploader = {
             progressBarText.text(p + '%');
         };
 
-        client.open('POST', 'upload.php');
+        client.open('POST', '../server/client.php');
+        // client.open('POST', 'upload.php');
         client.send(formData);
 
     },
@@ -392,7 +406,7 @@ var userImage = {
 
 
         client.onerror = function(e) {
-            alert('error, please try again');
+            alert('error, please try again (upload user image went wrong)');
         };
 
         client.onload = function(e) {
@@ -415,7 +429,8 @@ var userImage = {
             progressBar.text(p + '%');
         };
 
-        client.open('POST', 'upload.php');
+        client.open('POST', '../server/client.php');
+        // client.open('POST', 'upload.php');
         client.send(formData);
 
     },
@@ -432,9 +447,17 @@ var userImage = {
         var that = this;
         $.ajax({
             type: 'GET',
-            url: 'json/musicHiveUserImage.json', // has to be changed
+            url: '../server/client.php', // has to be changed
+            // url: 'json/musicHiveUserImage.json', // has to be changed
+            data: { 
+                type: 'getUserImage'
+            }
         }).done(function(data) {
-            that.renderData(data);
+            if(data.substring(0,5) === 'error'){
+                alert(data);
+            } else{
+                that.renderData(data);
+            }
         }).fail(function(error){
             alert('i´m sorry, something went wrong (get user image)');
         });
@@ -478,10 +501,18 @@ var playList = {
         var that = this;
         $.ajax({
             type: 'GET',
-            url: 'json/musicHivePlaylist.json', // has to be changed
+            url: '../server/client.php', // has to be changed
+            // url: 'json/musicHivePlaylist.json', // has to be changed
+            data: { 
+                type: 'getPlaylist'
+            }
         }).done(function(data) {
-            that.allEntriesWrapper.find('.musichive-playlist-entry-container').remove();
-            that.renderPlaylist(data);
+            if(data.substring(0,5) === 'error'){
+                alert(data);
+            } else{
+                that.allEntriesWrapper.find('.musichive-playlist-entry-container').remove();
+                that.renderPlaylist(data);
+            }
         }).fail(function(error){
             alert('i´m sorry, something went wrong (get playlist data)');
         });
@@ -539,19 +570,22 @@ var playList = {
 
         $.ajax({
             type: 'POST',
-            url: 'upload.php', // has to be changed
+            url: '../server/client.php', // has to be changed
+            // url: 'upload.php', // has to be changed
             data: { 
                 type: 'removeTrack',
                 trackId: trackId
             }
         }).done(function(data) {
-            console.log(data);
-
-            // refresh playlist, currently playing data
-            that.getPlaylist();
-            currentlyPlaying.getCurrentlyPlayingData();
+            if(data.substring(0,5) === 'error'){
+                alert(data);
+            } else{
+                // refresh playlist, currently playing data
+                that.getPlaylist();
+                currentlyPlaying.getCurrentlyPlayingData();
+            }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (get playlist data)');
+            alert('i´m sorry, something went wrong (remove track)');
         });
     },
 
@@ -603,7 +637,8 @@ var playList = {
 
             $.ajax({
                 type: 'POST',
-                url: 'upload.php', // has to be changed
+                url: '../server/client.php', // has to be changed
+                // url: 'upload.php', // has to be changed
                 data: { 
                     type: 'swapTrack',
                     trackIds: [
@@ -612,9 +647,13 @@ var playList = {
                     ]
                 }
             }).done(function(data) {
-                // refresh playlist, currently playing data
-                that.getPlaylist();
-                currentlyPlaying.getCurrentlyPlayingData();
+                if(data.substring(0,5) === 'error'){
+                    alert(data);
+                } else{
+                    // refresh playlist, currently playing data
+                    that.getPlaylist();
+                    currentlyPlaying.getCurrentlyPlayingData();
+                }
             }).fail(function(error){
                 alert('i´m sorry, something went wrong (swap track data)');
             });
