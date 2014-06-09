@@ -91,7 +91,7 @@ var currentlyPlaying = {
                 type: 'getInfo'
             }
         }).done(function(data) {
-            if(data.substring(0,5) === 'error'){
+            if(String(data).substring(0,5) === 'error'){
                 alert(data);
             } else{
                 that.renderData(data);
@@ -152,7 +152,7 @@ var currentlyPlaying = {
         }
 
         // if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
-        this.userImage.css('background-image', 'url(' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
+        this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
         // } else {
         //     this.userImage.css('background-image', 'url(img/user-image.jpg)');
         // }
@@ -440,7 +440,7 @@ var userImage = {
     },
 
     renderData: function(data){
-        $('#musichive-user-settings-image').css({'background': 'url(' + data.musicHiveUserImage.url + ')', 'background-size': 'cover'});
+        $('#musichive-user-settings-image').css({'background': 'url(' + '/server/userdata/' + data.musicHiveUserImage.url + ')', 'background-size': 'cover'});
     },
 
     getUserImageData: function(){
@@ -453,7 +453,7 @@ var userImage = {
                 type: 'getUserImage'
             }
         }).done(function(data) {
-            if(data.substring(0,5) === 'error'){
+            if(String(data).substring(0,5) === 'error'){
                 alert(data);
             } else{
                 that.renderData(data);
@@ -507,7 +507,7 @@ var playList = {
                 type: 'getPlaylist'
             }
         }).done(function(data) {
-            if(data.substring(0,5) === 'error'){
+            if(String(data).substring(0,5) === 'error'){
                 alert(data);
             } else{
                 that.allEntriesWrapper.find('.musichive-playlist-entry-container').remove();
