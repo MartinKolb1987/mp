@@ -184,7 +184,7 @@ var currentlyPlaying = {
 
 var uploader = {
 
-    allowedFileTypes: ['audio/mp3', 'audio/mpeg'],
+    allowedFileTypes: ['audio/mpeg', 'audio/x-mpeg', 'audio/x-mpeg-3', 'audio/mp3', 'audio/mp4', 'audio/ogg', 'audio/opus', 'audio/vorbis', 'audio/vnd.wav', 'audio/wav', 'audio/x-wav', 'audio/webm', 'audio/aiff', 'audio/x-aiff'],
     filename: '',
 
     init: function(){
