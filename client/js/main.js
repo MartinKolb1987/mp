@@ -92,12 +92,12 @@ var currentlyPlaying = {
             }
         }).done(function(data) {
             if(String(data).substring(0,5) === 'error'){
-                alert(data);
+                $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
                 that.renderData(data);
             }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (get currently playing data)');
+                $('#bug-logger').append('fail - error: i´m sorry, something went wrong (get currently playing data)<br/>');
         });
 
     },
@@ -113,12 +113,12 @@ var currentlyPlaying = {
             }
         }).done(function(data) {
             if(data.substring(0,5) === 'error'){
-                alert(data);
+                $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
                 $('#musichive-downvote').addClass('disabled');
             }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (send currently playing data downvote)');
+            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (send currently playing data downvote)<br/>');
         });
     },
 
@@ -459,12 +459,12 @@ var userImage = {
             }
         }).done(function(data) {
             if(String(data).substring(0,5) === 'error'){
-                alert(data);
+                $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
                 that.renderData(data);
             }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (get user image)');
+            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (get user image)<br/>');
         });
     },
 
@@ -513,13 +513,13 @@ var playList = {
             }
         }).done(function(data) {
             if(String(data).substring(0,5) === 'error'){
-                alert(data);
+                $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
                 that.allEntriesWrapper.find('.musichive-playlist-entry-container').remove();
                 that.renderPlaylist(data);
             }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (get playlist data)');
+            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (get playlist data)<br/>');
         });
     },
 
@@ -583,14 +583,14 @@ var playList = {
             }
         }).done(function(data) {
             if(data.substring(0,5) === 'error'){
-                alert(data);
+                $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
                 // refresh playlist, currently playing data
                 that.getPlaylist();
                 currentlyPlaying.getCurrentlyPlayingData();
             }
         }).fail(function(error){
-            alert('i´m sorry, something went wrong (remove track)');
+            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (remove track)<br/>');
         });
     },
 
@@ -653,14 +653,14 @@ var playList = {
                 }
             }).done(function(data) {
                 if(data.substring(0,5) === 'error'){
-                    alert(data);
+                    $('#bug-logger').append('done - error: ' + data + '<br/>');
                 } else{
                     // refresh playlist, currently playing data
                     that.getPlaylist();
                     currentlyPlaying.getCurrentlyPlayingData();
                 }
             }).fail(function(error){
-                alert('i´m sorry, something went wrong (swap track data)');
+                $('#bug-logger').append('fail - error: i´m sorry, something went wrong (swap track data)<br/>');
             });
 
     },
