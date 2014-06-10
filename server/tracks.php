@@ -78,10 +78,9 @@ function addTrack($filename) {
     $bucketToFillCountRow = $bucketToFillQuery->fetchArray(SQLITE3_ASSOC);
     $bucketToFillCount = $bucketToFillCountRow['COUNT(b_id)'];
 	if ($bucketToFillCount == 0) {
-		
 		// create new active bucket
-		$db->exec("INSERT INTO buckets (b_is_active) VALUES (1)");
-		$bucketToFill = getActiveBucket();
+		$db->exec("INSERT INTO buckets (b_is_active) VALUES (0)");
+		// hÄÄÄ? $bucketToFill = getActiveBucket();
 	}
 
 	$trueFile = $truePath . $filename;
@@ -96,7 +95,7 @@ function addTrack($filename) {
 	$lengthDate = date_parse($t_length);
 	$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
 
-	if(empty($t_title)) {
+	if(strlen($t_title) <= 1) {
 		$t_title = $filename;
 	}
 	
@@ -376,11 +375,13 @@ function getActiveBucket() {
     $db = new ClientDB();
 	
 	$activeBucketQuery = $db->query("SELECT b_id FROM buckets WHERE b_is_active=1");
-	
-    $activeBucketId = 0;
+	$activeBucketId = 0;
 
     while ($row = $activeBucketQuery->fetchArray(SQLITE3_ASSOC)) {
         $activeBucketId = (int)$row['b_id'];
+		if(empty($activeBucketId)) {
+			$activeBucketId = 0;
+		}
     }
 	
 	// close db
