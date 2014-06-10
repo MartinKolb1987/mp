@@ -652,7 +652,7 @@ var playList = {
                     ]
                 }
             }).done(function(data) {
-                if(data.substring(0,5) === 'error'){
+                if(String(data).substring(0,5) === 'error'){
                     $('#bug-logger').append('done - error: ' + data + '<br/>');
                 } else{
                     // refresh playlist, currently playing data
