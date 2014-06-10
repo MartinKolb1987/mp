@@ -123,13 +123,17 @@ var currentlyPlaying = {
     },
 
     renderData: function(data){
-        if(data.musicHiveInfo.status.internet_access){
-            this.internetAccess.text('Ja');
+        if(data.musicHiveInfo.status.internet_access == 'true'){
+            this.internetAccess.text('Yes');
         } else {
-            this.internetAccess.text('Nein');
+            this.internetAccess.text('No');
         }
-
         this.infoUsers.text(data.musicHiveInfo.status.users);
+
+		if(data.musicHiveInfo.currentlyPlaying == false) {
+			return true;
+		}
+
         this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
         this.artistText.text(data.musicHiveInfo.currentlyPlaying.t_artist);
         this.albumText.text(data.musicHiveInfo.currentlyPlaying.t_album);
@@ -150,12 +154,12 @@ var currentlyPlaying = {
         if(data.musicHiveInfo.currentlyPlaying.downvote !== 0){
             $('#musichive-downvote').addClass('disabled');
         }
-
-        // if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
-        this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
-        // } else {
-        //     this.userImage.css('background-image', 'url(img/user-image.jpg)');
-        // }
+		console.log(data);
+        if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
+        	this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
+        } else {
+            // this.userImage.css('background-image', 'url(img/user-image.jpg)');
+        }
 
         this.currentTrackId  = data.musicHiveInfo.currentlyPlaying.t_id;
     },
@@ -247,7 +251,7 @@ var uploader = {
             if($.inArray(fileType, this.allowedFileTypes) >= 0){
                 return true;
             } else {
-                alert('file type not supported.');
+                alert('file type not supported: ' + fileType);
                 return false;
             }
         } else {
@@ -261,21 +265,22 @@ var uploader = {
         var that = this;
         var fileReader = new FileReader();
         fileReader.onload = function(){
-            that.uploadFile(fileReader.result, progressBar);
+            that.uploadFile(fileReader.result, givenFile, progressBar);
         };
         fileReader.readAsDataURL(givenFile);
     },
 
-    uploadFile: function(fileData, progressBar){
+    uploadFile: function(fileData, givenFile, progressBar){
         // console.log(fileData);
         var that = this;
         var progressBarText = progressBar.find('span');
         var formData = new FormData();
         var client = new XMLHttpRequest();
         
+        /*formData.append('file', fileData);
+        formData.append('filename', that.filename);*/
         formData.append('type', 'uploadTrack');
-        formData.append('file', fileData);
-        formData.append('filename', that.filename);
+		formData.append('file', givenFile);
 
 
         client.onerror = function(e) {
@@ -389,21 +394,21 @@ var userImage = {
         var that = this;
         var fileReader = new FileReader();
         fileReader.onload = function(){
-            that.uploadFile(fileReader.result, progressBar);
+            that.uploadFile(fileReader.result, givenFile, progressBar);
         };
         fileReader.readAsDataURL(givenFile);
     },
 
-    uploadFile: function(fileData, progressBar){
+    uploadFile: function(fileData, givenFile, progressBar){
         // console.log(fileData);
         var that = this;
         var formData = new FormData();
         var client = new XMLHttpRequest();
 
-        formData.append('type', 'uploadUserImage');
-        formData.append('file', fileData);
-        formData.append('filename', that.filename);
-
+        /*formData.append('file', fileData);
+        formData.append('filename', that.filename);*/
+		formData.append('type', 'uploadUserImage');
+		formData.append('file', givenFile);
 
         client.onerror = function(e) {
             alert('error, please try again (upload user image went wrong)');
