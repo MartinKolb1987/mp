@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 var currentlyPlaying = {
 
-    pollingIntervalValue: 5000,
+    pollingIntervalValue: 1000,
     playlistUpdateIntervalValue: 1000,
     currentTrackId: 0,
     oldTrackId: 0,
