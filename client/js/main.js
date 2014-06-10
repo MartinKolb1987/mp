@@ -46,6 +46,7 @@ var currentlyPlaying = {
     pollingIntervalValue: 1000,
     playlistUpdateIntervalValue: 1000,
     currentTrackId: 0,
+    oldCurrentTrackId: 0,
     oldTrackId: 0,
 
     internetAccess: '',
@@ -55,6 +56,7 @@ var currentlyPlaying = {
     albumText: '',
     durationText: '',
     userImage: '',
+    downvote: '',
 
     init: function(){
         this.internetAccess = $('#musichive-info-internet');
@@ -64,6 +66,7 @@ var currentlyPlaying = {
         this.albumText = $('#musichive-player-album-text');
         this.durationText = $('#musichive-player-duration-text');
         this.userImage = $('#musichive-user-image');
+        this.downvote = $('#musichive-downvote');
 
         this.getCurrentlyPlayingData();
         this.pollingInterval();
@@ -73,9 +76,9 @@ var currentlyPlaying = {
 
     setEventlistener: function(){
         var that = this;
-        $('#musichive-downvote').on('click', function(){
+        this.downvote.on('click', function(){
             if(!$(this).hasClass('disabled')){
-                that.downvote(that.currentTrackId);
+                that.downvote.addClass(that.currentTrackId);
             }
         });
     },
@@ -103,6 +106,7 @@ var currentlyPlaying = {
     },
 
     downvote: function(trackId){
+        var that = this;
         $.ajax({
             type: 'POST',
             url: '/server/client.php', // has to be changed
@@ -115,7 +119,7 @@ var currentlyPlaying = {
             if(data.substring(0,5) === 'error'){
                 $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
-                $('#musichive-downvote').addClass('disabled');
+                that.downvote.addClass('disabled');
             }
         }).fail(function(error){
             $('#bug-logger').append('fail - error: i´m sorry, something went wrong (send currently playing data downvote)<br/>');
@@ -123,6 +127,14 @@ var currentlyPlaying = {
     },
 
     renderData: function(data){
+
+        this.currentTrackId = data.musicHiveInfo.currentlyPlaying.t_id;
+
+        // check if current playing song already shown
+        if(this.currentTrackId === this.oldCurrentTrackId){
+            return true;
+        }
+
         if(data.musicHiveInfo.status.internet_access == 'true'){
             this.internetAccess.text('Yes');
         } else {
@@ -131,8 +143,16 @@ var currentlyPlaying = {
         this.infoUsers.text(data.musicHiveInfo.status.users);
 
 		if(data.musicHiveInfo.currentlyPlaying == false) {
-			return true;
-		}
+            this.downvote.addClass('hide');
+            this.trackText.text('No song available');
+            this.artistText.text('');
+            this.albumText.text('');
+            this.durationText.text('');
+            this.userImage.css('background-image', 'url(img/user-image.jpg)');
+            return true;
+        } else {
+            this.downvote.removeClass('hide');
+        }
 
         this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
         this.artistText.text(data.musicHiveInfo.currentlyPlaying.t_artist);
@@ -152,23 +172,25 @@ var currentlyPlaying = {
 
         // if user has already voted track down
         if(data.musicHiveInfo.currentlyPlaying.downvote !== 0){
-            $('#musichive-downvote').addClass('disabled');
+            this.downvote.addClass('disabled');
+        } else {
+            this.downvote.removeClass('disabled');
         }
-		console.log(data);
+
         if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
         	this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
         } else {
-            // this.userImage.css('background-image', 'url(img/user-image.jpg)');
+            this.userImage.css('background-image', 'url(img/user-image.jpg)');
         }
 
-        this.currentTrackId  = data.musicHiveInfo.currentlyPlaying.t_id;
+        this.oldCurrentTrackId = this.currentTrackId;
+
     },
 
     pollingInterval: function(){
         var that = this;
         setInterval(function(){
             that.getCurrentlyPlayingData();
-            console.log('polling currently playing');
         }, that.pollingIntervalValue);
 
     },
