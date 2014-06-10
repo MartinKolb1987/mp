@@ -7,7 +7,7 @@
  */
 
 // includes
-require_once('db/db.php');
+require_once('db.php');
 
 // initialize database
 $db = new ClientDB();
@@ -25,7 +25,7 @@ $db->exec("DROP TABLE users");
 // create new tables
 echo('creating new tables...<br/>');
 // users
-$db->exec("CREATE TABLE users (u_ip TEXT PRIMARY KEY UNIQUE, u_picture TEXT, u_admin INT)");
+$db->exec("CREATE TABLE users (u_ip TEXT PRIMARY KEY, u_picture TEXT, u_admin INT)");
 // tracks
 $db->exec("CREATE TABLE tracks (t_id INTEGER PRIMARY KEY AUTOINCREMENT, u_ip TEXT REFERENCES users(u_ip), t_filename TEXT, t_artist TEXT, t_title TEXT, t_album TEXT, t_length INT)");
 // buckets
@@ -35,6 +35,7 @@ $db->exec("CREATE TABLE downvotes (u_ip TEXT REFERENCES users(u_ip), t_id INTEGE
 // bucketcontents
 $db->exec("CREATE TABLE bucketcontents (t_id INTEGER REFERENCES tracks(t_id), b_id INTEGER REFERENCES buckets(b_id), b_played INT, b_currently_playing INT)");
 
+/*
 // insert data
 echo('inserting dummy data...<br/>');
 
@@ -70,7 +71,7 @@ $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing
 $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing) VALUES ('6', '1', 0, 0)");
 $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing) VALUES ('7', '1', 0, 0)");
 $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing) VALUES ('8', '1', 0, 0)");
-
+*/
 // close database connection
 $db->close();
 unset($db);

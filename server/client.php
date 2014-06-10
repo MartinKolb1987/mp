@@ -23,14 +23,18 @@ require_once('tracks.php');
  */
 function execAction() {
     // get action
-    $action = $_POST['type'];
-    if(empty($action)) {
-        // debug mode
-        $action = $_GET['type'];
-        if(empty($action)) {
-            die('error: no action specified (GET/POST type)');
-        }
-    }
+	try {
+		$action = $_POST['type'];
+		if(empty($action)) {
+		    // debug mode
+		    $action = $_GET['type'];
+		    if(empty($action)) {
+		        die('error: no action specified (GET/POST type)');
+		    }
+		}
+	} catch(Exception $e) {
+		//bla
+	}
     
     switch($action){
         case 'uploadTrack':
@@ -63,13 +67,13 @@ function execAction() {
         
         case 'swapTrack':
             // sanity check - empty input
-            if (empty($_POST['trackids'][0])) {
+            if (empty($_POST['trackIds'][0])) {
                 die('error: no id specified (execAction() - swapTrack #1)');
-            } elseif (empty($_POST['trackids'][1])) {
+            } elseif (empty($_POST['trackIds'][1])) {
                 die('error: no id specified (execAction() - swapTrack #2)');
             } else {
                 // return should be true on success
-                $returnMsg = swapTrack($_POST['trackId'][0], $_POST['trackId'][1]);
+                $returnMsg = swapTrack($_POST['trackIds'][0], $_POST['trackIds'][1]);
                 if($returnMsg) {
                     header('Content-type: text/plain');
                     echo 'success';
@@ -226,10 +230,12 @@ function getInfo() {
     $currentTrack = $currentlyPlayingArray['t_id'];
 
 	// user downvote check
-	$userDownvoteQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE t_id=$currentTrack");
-    $userDownvoteArray = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC);
-    $userDownvoteCount = $userDownvoteArray['COUNT(u_ip)'];
-    $currentlyPlayingArray['downvote'] = $userDownvoteCount;
+	if(empty($currentTrack) == false) {
+		$userDownvoteQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE t_id=$currentTrack AND u_ip='$clientIp'");
+		$userDownvoteArray = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC);
+		$userDownvoteCount = $userDownvoteArray['COUNT(u_ip)'];
+		$currentlyPlayingArray['downvote'] = $userDownvoteCount;
+	}
     
     // get number of all connected client ips
     $getAllUsersQuery = $db->query("SELECT COUNT(u_ip) FROM users");

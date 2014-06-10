@@ -125,6 +125,8 @@ function addTrack($filename) {
  */
 function swapTrack($track1, $track2) {
     global $clientIp;
+	(int)$track1 = $track1;
+	(int)$track2 = $track2;
 
     if (userOwnsTrack($track1) == false || userOwnsTrack($track2) == false) {
         die('error: user does not own one of the tracks (swapTrack() - wrong track id?)');
@@ -147,20 +149,20 @@ function swapTrack($track1, $track2) {
     $bucket1Query = $db->query("SELECT b_id FROM bucketcontents WHERE t_id='$track1'");
 
     while ($row = $bucket1Query->fetchArray(SQLITE3_ASSOC)) {
-        $bucket1 = $row['b_id'];
+        $bucket1 = (int)$row['b_id'];
     }
 
     $bucket2Query = $db->query("SELECT b_id FROM bucketcontents WHERE t_id='$track2'");
     
     while ($row = $bucket2Query->fetchArray(SQLITE3_ASSOC)) {
-        $bucket2 = $row['b_id'];
+        $bucket2 = (int)$row['b_id'];
     }
     
     // swap bucket ids in db
-    if ( $db->exec("UPDATE bucketcontents SET b_id='$bucket1' WHERE t_id='$track2'") == false ) {
+    if ( $db->exec("UPDATE bucketcontents SET b_id=$bucket1 WHERE t_id=$track2") == false ) {
 		die('error: sqlite exec failed (swapTrack() #1)');
 	}
-    if ( $db->exec("UPDATE bucketcontents SET b_id='$bucket2' WHERE t_id='$track1'") == false ) {
+    if ( $db->exec("UPDATE bucketcontents SET b_id=$bucket2 WHERE t_id=$track1") == false ) {
 		die('error: sqlite exec failed (swapTrack() #2)');
 	}
 

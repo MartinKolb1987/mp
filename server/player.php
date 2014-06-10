@@ -39,7 +39,12 @@ function execAction() {
             if (empty($_GET['filename'])) {
                 die('error: no filename specified (execAction() - playbackFinished)');
             } else {
-                playbackFinished($_GET['filename']);
+                $returnMsg = playbackFinished($_GET['filename']);
+				if($returnMsg) {
+					echo '1';
+				} else {
+					echo '0';
+				}
             }
             break;
         
@@ -171,6 +176,7 @@ function getTrackToPlay() {
 /* playbackFinished()
  * Music player will call this after playback has finished
  * @param String $finishedTrack filename and path of finished title
+ * @return 1 on success, 0 on fail
  */
 function playbackFinished($t_filename) {
 
@@ -187,12 +193,13 @@ function playbackFinished($t_filename) {
     //echo ('finished track id: '.$finishedTrackId.'<br/>');
 
 	//update track-status
-    $db->query("UPDATE bucketcontents SET b_currently_playing = 0, b_played = 1 WHERE t_id = '$finishedTrackId'");
+    $db->exec("UPDATE bucketcontents SET b_currently_playing = 0, b_played = 1 WHERE t_id = '$finishedTrackId'");
+
+	return true;
 
     // close db
     $db->close();
     unset($db);
-
 }
 
 

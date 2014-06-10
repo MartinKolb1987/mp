@@ -10,8 +10,8 @@
 require_once('db/db.php');
 
 // global variables
-$uploadDirectory = getenv("DOCUMENT_ROOT") . 'server/userdata/';
-$truePath = '/usr/share/nginx/http/userdata/';
+$uploadDirectory = getenv("DOCUMENT_ROOT") . '/server/userdata/';
+$truePath = '/usr/share/nginx/http/server/userdata/';
 $clientIp = checkUser();
 
 
