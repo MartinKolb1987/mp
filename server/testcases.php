@@ -8,11 +8,12 @@
 
 // includes
 require_once('db/db.php');
-/*require_once('db/createdb.php');
+//require_once('db/createdb.php');
 require_once('users.php');
 require_once('tracks.php');
 //require_once('player.php');
 
+/*
 // get clientIp 
 $clientIp = checkUser();
 
@@ -36,6 +37,8 @@ getTrackToPlay();
 
 $downvotes = abortPlayback();
 echo ('downvotes: '.$downvotes.'<br/>');*/
+
+addTrack('192.168.0.64/6686089.mp3');
 
 $db = new ClientDB();
 echo 'db errors: ' . $db->lastErrorMsg() . '<br/>';

@@ -14,7 +14,7 @@ require_once('tracks.php');
 
 /* execAction()
  * Determine what to do, depending on client $_POST['type']
- * Rendered output will be text or JSON
+ * Rendered output will be text
  */
 function execAction() {
     $action = $_GET['type'];
@@ -40,6 +40,7 @@ function execAction() {
                 die('error: no filename specified (execAction() - playbackFinished)');
             } else {
                 $returnMsg = playbackFinished($_GET['filename']);
+				header('Content-type: text/plain');
 				if($returnMsg) {
 					echo '1';
 				} else {
@@ -91,7 +92,7 @@ function getTrackToPlay() {
     $bucketTracksCount = $bucketTracksCountRow['COUNT(t_id)'];
 
     // switch to next bucket if every track in active bucket is played and next bucket exists
-    if ($bucketTracksCount = 0) {
+    if ($bucketTracksCount == 0) {
         //echo('error: there are no more unplayed tracks within the active bucket! Switching to next bucket.<br/>');
 
         // look if next bucket exists
@@ -99,7 +100,7 @@ function getTrackToPlay() {
         $nextBucket = $db->query("SELECT COUNT(b_id) FROM buckets WHERE b_id = $nextActiveBucketId");
         $nextBucketCountRow = $nextBucket->fetchArray(SQLITE3_ASSOC);
         $nextBucketCount = $nextBucketCountRow['COUNT(b_id)'];
-        if ($nextBucketCount = 0) {
+        if ($nextBucketCount == 0) {
             //echo('error: there are no more buckets to play from.<br/>');
 
             // close db
@@ -110,15 +111,19 @@ function getTrackToPlay() {
         }
 
         // switch buckets 
-        $db->query("UPDATE buckets SET b_is_active = 0 WHERE b_id = $activeBucketId");
-        $db->query("UPDATE buckets SET b_is_active = 1 WHERE b_id = $nextActiveBucketId");
+        if ( $db->exec("UPDATE buckets SET b_is_active=0 WHERE b_id=$activeBucketId") == false ) {
+			die('error: sqlite exec failed (getTrackToPlay() - switch bucket #1)');
+		}
+        if ( $db->exec("UPDATE buckets SET b_is_active=1 WHERE b_id=$nextActiveBucketId") == false ) {
+			die('error: sqlite exec failed (getTrackToPlay() - switch bucket #2)');
+		}
         $activeBucketId = $nextActiveBucketId;
 
         // look if next bucket is empty
         $bucketTracksQuery = $db->query("SELECT COUNT(t_id) FROM bucketcontents WHERE b_id = $activeBucketId AND b_played = 0");
         $bucketTracksCountRow = $bucketTracksQuery->fetchArray(SQLITE3_ASSOC);
         $bucketTracksCount = $bucketTracksCountRow['COUNT(t_id)'];
-        if ($bucketTracksCount = 0) {
+        if ($bucketTracksCount == 0) {
             //echo('error: the next bucket is empty.<br/>');
 
             // close db
@@ -168,7 +173,7 @@ function getTrackToPlay() {
     $db->close();
     unset($db);
     
-    // return the u_id and t_filename of the random track
+    // return the t_filename of random track
     return $randomTrackFilename;
 }
 

@@ -16,6 +16,7 @@ require_once('users.php');
  */
 function addTrack($filename) {
     global $clientIp;
+    global $truePath;
     $bucketToFill;
 	$leftover = 0;
 
@@ -83,18 +84,28 @@ function addTrack($filename) {
 		$bucketToFill = getActiveBucket();
 	}
 
+	$trueFile = $truePath . $filename;
+	echo $trueFile;
+
     // get metadata from audio file
-    /*$t_artist = shell_exec('mediainfo --Inform="General;%Performer%" "'.$filename. '"');
-    $t_title = shell_exec('mediainfo --Inform="General;%Track%" "'.$filename. '"');
-    $t_album = shell_exec('mediainfo --Inform="General;%Album%" "'.$filename. '"');
-    $t_length = shell_exec('mediainfo --Inform="General;%Duration/String%" "'.$filename. '"');*/
+    $t_artist = shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"');
+    $t_title = shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"');
+    $t_album = shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"');
+    $t_length = shell_exec('mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
+
+	$lengthDate = date_parse($t_length);
+	$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
+
+	if(empty($t_title)) {
+		$t_title = $filename;
+	}
 	
-	$randomNo = rand(0, 999);
+	/*$randomNo = rand(0, 999);
     
 	$t_artist = 'testartist' . $randomNo;
 	$t_title = 'testtitle' . $randomNo;
 	$t_album = 'testalbum' . $randomNo;
-	$t_length = (int)$randomNo;
+	$t_length = (int)$randomNo;*/
 
     // insert track into db
     $db->exec("INSERT INTO tracks (u_ip, t_filename, t_artist, t_title, t_album, t_length) VALUES ('$clientIp', '$filename', '$t_artist', '$t_title', '$t_album', $t_length)");
