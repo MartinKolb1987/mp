@@ -76,9 +76,9 @@ var currentlyPlaying = {
 
     setEventlistener: function(){
         var that = this;
-        this.downvote.on('click', function(){
+        $('#musichive-track-info').on('click', '#musichive-downvote', function(){
             if(!$(this).hasClass('disabled')){
-                that.downvote.addClass(that.currentTrackId);
+                $('#musichive-downvote').addClass(that.currentTrackId);
             }
         });
     },
@@ -119,7 +119,7 @@ var currentlyPlaying = {
             if(data.substring(0,5) === 'error'){
                 $('#bug-logger').append('done - error: ' + data + '<br/>');
             } else{
-                that.downvote.addClass('disabled');
+                $('#musichive-downvote').addClass('disabled');
             }
         }).fail(function(error){
             $('#bug-logger').append('fail - error: i´m sorry, something went wrong (send currently playing data downvote)<br/>');
@@ -143,7 +143,7 @@ var currentlyPlaying = {
         this.infoUsers.text(data.musicHiveInfo.status.users);
 
 		if(data.musicHiveInfo.currentlyPlaying == false) {
-            this.downvote.addClass('hide');
+            $('#musichive-downvote').addClass('hide');
             this.trackText.text('No song available');
             this.artistText.text('');
             this.albumText.text('');
@@ -151,7 +151,7 @@ var currentlyPlaying = {
             this.userImage.css('background-image', 'url(img/user-image.jpg)');
             return true;
         } else {
-            this.downvote.removeClass('hide');
+            $('#musichive-downvote').removeClass('hide');
         }
 
         this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
@@ -172,9 +172,9 @@ var currentlyPlaying = {
 
         // if user has already voted track down
         if(data.musicHiveInfo.currentlyPlaying.downvote !== 0){
-            this.downvote.addClass('disabled');
+            $('#musichive-downvote').addClass('disabled');
         } else {
-            this.downvote.removeClass('disabled');
+            $('#musichive-downvote').removeClass('disabled');
         }
 
         if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
