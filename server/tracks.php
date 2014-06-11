@@ -206,17 +206,17 @@ function deleteTrack($track) {
     // is the track currently playing?
     $currentlyPlaying = currentlyPlaying();
 
-    if ($currentlyPlaying == $track) {
-        $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('127.0.0.1', $track");
-    }
-
 	// initialize database
     $db = new ClientDB();
 	
-    // delete track from db
-    $db->exec("DELETE FROM bucketcontents WHERE t_id = $track");
-    $db->exec("DELETE FROM downvotes WHERE t_id = $track");
-    $db->exec("DELETE FROM tracks WHERE t_id = $track");
+    if ($currentlyPlaying == $track) {
+        $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('127.0.0.1', $track");
+    } else {
+	    // delete track from db
+		$db->exec("DELETE FROM bucketcontents WHERE t_id = $track");
+		$db->exec("DELETE FROM downvotes WHERE t_id = $track");
+		$db->exec("DELETE FROM tracks WHERE t_id = $track");
+	}
 	
 	// close db
     $db->close();
