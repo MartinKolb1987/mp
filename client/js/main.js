@@ -630,6 +630,7 @@ var playList = {
             var trackTwo = '';
             var trackOne = '';
 
+
             trackOne = $(clickedElement).parents('.musichive-playlist-entry-container');
 
             if(type === 'up'){
@@ -641,6 +642,11 @@ var playList = {
             var trackIdOne = trackOne.attr('data-trackid');
             var trackIdTwo = trackTwo.attr('data-trackid');
             
+            if(trackTwo == currentlyPlaying.currentTrackId || trackOne == currentlyPlaying.currentTrackId){
+                alert('Song ist currently playing... swap not possible!');
+                return true;
+            }
+
             console.log(trackIdOne);
             console.log(trackIdTwo);
 
