@@ -270,7 +270,7 @@ var uploader = {
             var fileType = givenFile[0].files[0].type;
 
             // check if file type is allowed
-            if($.inArray(fileType, this.allowedFileTypes) >= 0 && fileType.length == 0){
+            if($.inArray(fileType, this.allowedFileTypes) >= 0 || fileType.length == 0){
                 return true;
             } else {
                 alert('file type not supported: ' + fileType);
