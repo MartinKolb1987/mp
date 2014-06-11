@@ -191,13 +191,14 @@ function uploadFile($type, $file) {
 	if($dirtyHack) {
 		$allowedFileExt = ['mp3', 'mp4', 'wav', 'ogg', 'm4a', 'aiff', 'flac'];
 		$checker = false;
-		while($forbiddenExt = array_pop($forbiddenFileExt)) {
-			if (strpos($fileExt, $forbiddenExt) !== false) {
+		while($allowedExt = array_pop($allowedFileExt)) {
+			if (strpos($fileExt, $allowedExt) !== false) {
 				$checker = true;
 			}
 		}
 		if($checker == false) {
-			die('error: forbidden file extension (uploadFile())');
+			echo('error: forbidden file extension: ' . $fileExt .' (uploadFile())');
+			die();
 		}
 	}
     
