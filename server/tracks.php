@@ -38,7 +38,7 @@ function addTrack($filename) {
     }
 	
 	// check if leftover
-	$leftoverTrackCountQuery = $db->query("SELECT COUNT(t.t_id)FROM bucketcontents bc INNER JOIN tracks t ON bc.t_id = t.t_id INNER JOIN buckets b ON bc.b_id = b.b_id WHERE t.u_ip = '$clientIp' AND bc.b_played = 1 AND bc.b_currently_playing = 0 AND b.b_is_active = 1");
+	$leftoverTrackCountQuery = $db->query("SELECT COUNT(t.t_id) FROM bucketcontents bc INNER JOIN tracks t ON bc.t_id = t.t_id INNER JOIN buckets b ON bc.b_id = b.b_id WHERE t.u_ip = '$clientIp' AND bc.b_played = 1 AND bc.b_currently_playing = 0 AND b.b_is_active = 1");
 	$leftoverTracksCountRow = $leftoverTrackCountQuery->fetchArray(SQLITE3_ASSOC);
     $leftoverTracksCount = $leftoverTracksCountRow['COUNT(t.t_id)'];
 	
@@ -68,7 +68,9 @@ function addTrack($filename) {
 	}
 		
     // the bucket (b_id) the user wants to add the track to
-    $bucketToFill = ($activeBucketId + $userTracksCount) + $leftover;
+    $bucketToFill = $activeBucketId + $userTracksCount + $leftover;
+	
+	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' activeBucket: '.$activeBucketId);
 	
 	// initialize database
 	$db = new ClientDB();
