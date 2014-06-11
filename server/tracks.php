@@ -210,7 +210,7 @@ function deleteTrack($track) {
     $db = new ClientDB();
 	
     if ($currentlyPlaying == $track) {
-        $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('127.0.0.1', $track");
+        $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('127.0.0.1', $track)");
     } else {
 	    // delete track from db
 		$db->exec("DELETE FROM bucketcontents WHERE t_id = $track");
