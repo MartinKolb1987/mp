@@ -110,7 +110,9 @@ function addTrack($filename) {
 	$db = new ClientDB();
 
     // insert track into db
-    $db->exec("INSERT INTO tracks (u_ip, t_filename, t_artist, t_title, t_album, t_length) VALUES ('$clientIp', '$filename', '$t_artist', '$t_title', '$t_album', $t_length)");
+	echo('inserting: '.$clientIp . ' ' .$filename . ' ' .$t_artist . ' ' .$t_title . ' ' .$t_album . ' ' .$t_length);
+    $dbInsert = $db->exec("INSERT INTO tracks (u_ip, t_filename, t_artist, t_title, t_album, t_length) VALUES ('$clientIp', '$filename', '$t_artist', '$t_title', '$t_album', $t_length)");
+	echo('insert: '.$dbInsert);
 
     // fill bucketcontents with t_id
     // ========================================
@@ -122,6 +124,7 @@ function addTrack($filename) {
         $trackId = $row['t_id'];
     }
     
+	echo('t-id: '.$trackId);
     $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing) VALUES ('$trackId', '$bucketToFill', 0, 0)");
     // ========================================
     
