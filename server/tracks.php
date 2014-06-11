@@ -94,9 +94,9 @@ function addTrack($filename) {
 	$trueFile = $truePath . $filename;
 
     // get metadata from audio file
-    $t_artist = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
-    $t_title = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
-    $t_album = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
+    $t_artist = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
+    $t_title = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
+    $t_album = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
     $t_length = shell_exec('mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
 
 	$lengthDate = date_parse($t_length);
