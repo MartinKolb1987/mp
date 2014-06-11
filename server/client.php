@@ -165,12 +165,19 @@ function uploadFile($type, $file) {
     
     // allowed file type server side check
     $checkFileType = false;
-    while($fileType = array_pop($allowedFiles)) {
-        if($fileType == strtolower($file['type'])) {
-            $checkFileType = true;
-            break;
-        }
-    }
+	$dirtyHack = false;
+	if (strlen($fileType) <= 1) {
+		// dirty hack for missing MIME type from file picker (google chrome / android 4.4)
+		$checkFileType = true;
+		$dirtyHack = true;
+	} else {
+		while($fileType = array_pop($allowedFiles)) {
+			if($fileType == strtolower($file['type'])) {
+				$checkFileType = true;
+				break;
+			}
+		}
+	}
     
     if($checkFileType == false) {
         die('error: file type does not match (uploadFile())');
@@ -179,6 +186,20 @@ function uploadFile($type, $file) {
     // get file name and extention
     $fileName = urlencode(strtolower($file['name']));
     $fileExt = substr($fileName, strrpos($fileName, '.'));
+	
+	// dirty hack for missing MIME type from file picker (google chrome / android 4.4)
+	if($dirtyHack) {
+		$allowedFileExt = ['mp3', 'mp4', 'wav', 'ogg', 'm4a', 'aiff', 'flac'];
+		$checker = false;
+		while($forbiddenExt = array_pop($forbiddenFileExt)) {
+			if (strpos($fileExt, $forbiddenExt) !== false) {
+				$checker = true;
+			}
+		}
+		if($checker == false) {
+			die('error: forbidden file extension (uploadFile())');
+		}
+	}
     
     // check against forbidden file extensions
     $forbiddenFileExt = ['php', 'htm', 'exe', 'run', 'bin', 'torrent', 'js', 'css', 'zip', 'rar' , 'sh'];
