@@ -112,6 +112,32 @@ function createUser($currentIP) {
 }
 
 
+/* getActiveUsers()
+ * Returns all active users
+ * @return Integer count of all active users
+ */
+function getActiveUsers() {
+    $usersCount = 0;
+    
+    // initialize database   
+    $db = new ClientDB();
+    
+    $usersQuery = $db->query("SELECT u_ip FROM users");
+    while ($row = $usersQuery->fetchArray(SQLITE3_ASSOC)) {
+        $usersCount++;
+    }
+    
+    // close db
+    $db->close();
+    unset($db);
+    
+    // substract super user
+    $usersCount = $usersCount - 1;
+    
+    return $usersCount;
+}
+
+
 /* setPicture()
  * Add user picture to database
  * @param String path to picture
