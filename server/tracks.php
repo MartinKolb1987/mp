@@ -85,7 +85,7 @@ function addTrack($filename, $oldFilename) {
     $bucketToFillQuery = $db->query("SELECT b_id FROM buckets WHERE b_id = $bucketToFill");
 	echo('error: DEBUG bucketToFillQuery: ');
 	print_r($bucketToFillQuery);
-    while ($row = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC)) {
+    while ($row = $bucketToFillQuery->fetchArray(SQLITE3_ASSOC)) {
         $bucketToFillCount++;
     }
 	
