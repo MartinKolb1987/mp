@@ -80,7 +80,7 @@ function createUser($currentIP) {
     
     //echo 'there are ' . $userCount . ' users in the db<br/>';
     
-    if ($userCount == 0) {
+    if ($userCount == 1) {
         $admin = 1;
     }
     

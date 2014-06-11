@@ -11,7 +11,7 @@ class ClientDB extends SQLite3
     function __construct()
     {
         $this->open('/usr/share/nginx/html/server/db/db.sqlite');
-        $this->busyTimeout(10000);
+        $this->busyTimeout(20000);
     }
 }
 ?>

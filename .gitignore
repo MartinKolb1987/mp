@@ -1,4 +1,4 @@
 ### komodoedit
 *.komodoproject
 .komodotools
-./server/db/db.sqlite
+*.sqlite

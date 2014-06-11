@@ -84,7 +84,6 @@ function addTrack($filename, $oldFilename) {
 	if ($bucketToFillCount == 0) {
 		// create new active bucket
 		$db->exec("INSERT INTO buckets (b_is_active) VALUES (0)");
-		// hÄÄÄ? $bucketToFill = getActiveBucket();
 	}
 	
 	// close db
@@ -208,7 +207,7 @@ function deleteTrack($track) {
     $currentlyPlaying = currentlyPlaying();
 
     if ($currentlyPlaying == $track) {
-        // @TODO fade out (audio)
+        $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('127.0.0.1', $track");
     }
 
 	// initialize database

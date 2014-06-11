@@ -72,7 +72,7 @@ function getTrackToPlay() {
 	// check if a track is currently playing
 	$currentlyPlayingTrackQuery = $db->query("SELECT COUNT(t_id) FROM bucketcontents WHERE b_id = $activeBucketId AND b_currently_playing = 1");
     $currentlyPlayingTrackCountRow = $currentlyPlayingTrackQuery->fetchArray(SQLITE3_ASSOC);
-    $currentlyPlayingTrackCount = $currentlyPlayingTrackCountRow['COUNT(b_id)'];
+    $currentlyPlayingTrackCount = $currentlyPlayingTrackCountRow['COUNT(t_id)'];
 	if ($currentlyPlayingTrackCount == 1) {
 		// replay currently playing track
 		$currentlyPlayingFilename;
@@ -209,6 +209,8 @@ function playbackFinished($t_filename) {
  * @return Integer 0 = play, 1 = abort
  */
 function abortPlayback() {
+	// get currently played track
+    $currentTrackId = currentlyPlaying();
 
     // initialize database
     $db = new ClientDB();
@@ -217,18 +219,16 @@ function abortPlayback() {
     $usersQuery = $db->query("SELECT COUNT(u_ip) FROM users");
     $usersCountRow = $usersQuery->fetchArray(SQLITE3_ASSOC);
     $usersCount = $usersCountRow['COUNT(u_ip)'];
-
-    // get currently played track
-    $currentTrackId;
-    $currentTrackQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_currently_playing = 1");
-    while ($row = $currentTrackQuery->fetchArray(SQLITE3_ASSOC)) {
-        $currentTrackId = $row['t_id'];
-    }
-
+    
     // get the current downvote-count from the played track
     $downvoteQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE t_id = '$currentTrackId'");
     $downvoteCountRow = $downvoteQuery->fetchArray(SQLITE3_ASSOC);
     $downvoteCount = $downvoteCountRow['COUNT(u_ip)'];
+	
+	// check if user aborted track (super admin downvote)
+	$deletedQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE u_ip = '127.0.0.1' AND t_id = '$currentTrackId'");
+    $deletedCountRow = $deletedQuery->fetchArray(SQLITE3_ASSOC);
+    $deletedCount = (int)$deletedCountRow['COUNT(u_ip)'];
 
     // close db
     $db->close();
@@ -238,7 +238,11 @@ function abortPlayback() {
     if ($downvoteCount > ($usersCount / 2)) {
         return 1;
     } else {
-        return 0;
+		if($deletedCount == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
     }
     
 }

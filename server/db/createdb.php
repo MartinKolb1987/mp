@@ -35,12 +35,14 @@ $db->exec("CREATE TABLE downvotes (u_ip TEXT REFERENCES users(u_ip), t_id INTEGE
 // bucketcontents
 $db->exec("CREATE TABLE bucketcontents (t_id INTEGER REFERENCES tracks(t_id), b_id INTEGER REFERENCES buckets(b_id), b_played INT, b_currently_playing INT)");
 
-/*
+
 // insert data
-echo('inserting dummy data...<br/>');
+echo('inserting super user...<br/>');
 
 // insert - users
-$db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('2.2.2.2', '2.2.2.2/user.jpg', 1)");
+$db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('127.0.0.1', 'default.png', 1)");
+
+/*
 $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('1.1.1.1', '1.1.1.1/user.png', 0)");
 $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('3.3.3.3', '3.3.3.3/user.png', 0)");
 $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('4.4.4.4', '4.4.4.4/user.png', 0)");
