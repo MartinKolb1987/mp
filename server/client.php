@@ -165,11 +165,9 @@ function uploadFile($type, $file) {
     
     // allowed file type server side check
     $checkFileType = false;
-	$dirtyHack = false;
 	if (strlen($fileType) <= 1) {
 		// dirty hack for missing MIME type from file picker (google chrome / android 4.4)
 		$checkFileType = true;
-		$dirtyHack = true;
 	} else {
 		while($fileType = array_pop($allowedFiles)) {
 			if($fileType == strtolower($file['type'])) {
@@ -185,21 +183,13 @@ function uploadFile($type, $file) {
     
     // get file name and extention
     $fileName = urlencode(strtolower($file['name']));
-    $fileExt = substr($fileName, strrpos($fileName, '.'));
-	
-	// dirty hack for missing MIME type from file picker (google chrome / android 4.4)
-	if($dirtyHack) {
-		$allowedFileExt = ['mp3', 'mp4', 'wav', 'ogg', 'm4a', 'aiff', 'flac'];
-		$checker = false;
-		while($allowedExt = array_pop($allowedFileExt)) {
-			if (strpos($fileExt, $allowedExt) !== false) {
-				$checker = true;
-			}
-		}
-		if($checker == false) {
-			echo('error: forbidden file extension: ' . $fileExt .' (uploadFile())');
-			die();
-		}
+	$fileExt;
+	// check if filename has an extension (contains dot)
+	if (strpos($fileName, '.') !== false) {
+		$fileExt = substr($fileName, strrpos($fileName, '.'));
+	} else {
+		// dirty hack: on missing file extension, assume .mp3
+		$fileExt = '.mp3';
 	}
     
     // check against forbidden file extensions
