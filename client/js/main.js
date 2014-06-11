@@ -700,7 +700,7 @@ var playList = {
 
         $('#bug-logger').append($('.musichive-playlist-entry-container').first().attr('data-trackid') + ' -- ' + currentlyPlaying.currentTrackId + '<br/>');
 
-            editableEntry.find('.musichive-song-move-up:eq(1)').addClass('hide');
+            editableEntry.find('.musichive-song-move-up:nth-child(1)').addClass('hide');
         if($('.musichive-playlist-entry-container').first().attr('data-trackid') == currentlyPlaying.currentTrackId){
             down.first().addClass('hide');
         }
