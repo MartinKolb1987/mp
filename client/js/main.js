@@ -269,7 +269,7 @@ var uploader = {
             var fileSize = givenFile[0].files[0].size;
             var fileType = givenFile[0].files[0].type;
 
-            // check if file type  is allowed
+            // check if file type is allowed
             if($.inArray(fileType, this.allowedFileTypes) >= 0 || fileType.length == 0){
                 return true;
             } else {
