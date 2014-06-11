@@ -65,14 +65,15 @@ function checkUser() {
  * @param String $currentIP current user ip
  * @return String u_ip - remote address of user calling the script
  */
-function createUser($currentIP) {
-    // initialize database   
-    $db = new ClientDB();   
+function createUser($currentIP) { 
     global $uploadDirectory;
     global $truePath;
+    $admin = 0;
+    
+    // initialize database   
+    $db = new ClientDB();
     
     // first user will become admin, so check if first user
-    $admin = 0;
     $countAllUsersQuery = $db->query("SELECT COUNT(u_ip) FROM users");
     $countAllUsersRow = $countAllUsersQuery->fetchArray(SQLITE3_ASSOC);
     $userCount = $countAllUsersRow['COUNT(u_ip)'];
@@ -84,9 +85,7 @@ function createUser($currentIP) {
     }
     
     // insert data
-    if ( $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('$currentIP', 'default.png', '$admin')") == false ) {
-        echo('error: sqlite exec failed (createUser() - insert data)');
-    }
+    $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('$currentIP', 'default.png', '$admin')");
     
     // close db
     $db->close();
@@ -115,13 +114,12 @@ function createUser($currentIP) {
  * @return Boolean true on success
  */
 function setPicture($path) {
-    // initialize database   
-    $db = new ClientDB();
     global $clientIp;
     
-    if ( $db->exec("UPDATE users SET u_picture = '$path' WHERE u_ip='$clientIp'") == false ) {
-        die('error: sqlite exec failed (setPicture() update)');
-    }
+    // initialize database   
+    $db = new ClientDB();
+    
+    $db->exec("UPDATE users SET u_picture = '$path' WHERE u_ip='$clientIp'");
     
     // close db
     $db->close();
@@ -136,13 +134,12 @@ function setPicture($path) {
  * @return Boolean true on success
  */
 function deletePicture() {
-    // initialize database   
-    $db = new ClientDB();
     global $clientIp;
     
-    if ( $db->exec("UPDATE users SET u_picture = 'default.png' WHERE u_ip='$clientIp'") == false ) {
-        die('error: sqlite exec failed (deletePicture() update)');
-    }
+    // initialize database   
+    $db = new ClientDB();
+    
+    $db->exec("UPDATE users SET u_picture = 'default.png' WHERE u_ip='$clientIp'");
     
     // close db
     $db->close();

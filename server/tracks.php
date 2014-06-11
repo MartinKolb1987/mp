@@ -169,12 +169,8 @@ function swapTrack($track1, $track2) {
     }
     
     // swap bucket ids in db
-    if ( $db->exec("UPDATE bucketcontents SET b_id=$bucket1 WHERE t_id=$track2") == false ) {
-		die('error: sqlite exec failed (swapTrack() #1)');
-	}
-    if ( $db->exec("UPDATE bucketcontents SET b_id=$bucket2 WHERE t_id=$track1") == false ) {
-		die('error: sqlite exec failed (swapTrack() #2)');
-	}
+    $db->exec("UPDATE bucketcontents SET b_id=$bucket1 WHERE t_id=$track2");
+    $db->exec("UPDATE bucketcontents SET b_id=$bucket2 WHERE t_id=$track1");
 
     // close db
     $db->close();
@@ -208,15 +204,9 @@ function deleteTrack($track) {
     $db = new ClientDB();
 	
     // delete track from db
-    if ( $db->exec("DELETE FROM bucketcontents WHERE t_id = $track") == false ) {
-		die('error: sqlite exec failed (deleteTrack() - delete from bucketcontents)');
-	}
-    if ( $db->exec("DELETE FROM downvotes WHERE t_id = $track") == false ) {
-		die('error: sqlite exec failed (deleteTrack() - delete from downvotes)');
-	}
-    if ( $db->exec("DELETE FROM tracks WHERE t_id = $track") == false ) {
-		die('error: sqlite exec failed (deleteTrack() - delete from tracks)');
-	}
+    $db->exec("DELETE FROM bucketcontents WHERE t_id = $track");
+    $db->exec("DELETE FROM downvotes WHERE t_id = $track");
+    $db->exec("DELETE FROM tracks WHERE t_id = $track");
 	
 	// close db
     $db->close();
@@ -253,9 +243,7 @@ function deleteTrack($track) {
             if ((int)$userPlaylistArray[$i]['b_id'] != $activeBucketId) {
 				//echo 'first entry is not in active bucket! <br/>';
                 $currentTitleId = (int)$userPlaylistArray[$i]['t_id'];
-                if ( $db->exec("UPDATE bucketcontents SET b_id=$activeBucketId WHERE t_id=$currentTitleId") == false ) {
-					die('error: sqlite exec failed (deleteTrack() - reorder bucketcontents #1)');
-				}
+                $db->exec("UPDATE bucketcontents SET b_id=$activeBucketId WHERE t_id=$currentTitleId");
                 $userPlaylistArray[$i]['b_id'] = $activeBucketId;
 				//echo 'first entry corrected! <br/>';
             }
@@ -266,9 +254,7 @@ function deleteTrack($track) {
 			//echo 'bucket gap found between ' . (int)$userPlaylistArray[$i]['t_id'] . ' and ' . (int)$userPlaylistArray[$i+1]['t_id'] . '<br/>';
             $newBucketId = (int)$userPlaylistArray[$i]['b_id'] + 1;
             $newTitleId = (int)$userPlaylistArray[$i+1]['t_id'];
-            if ( $db->exec("UPDATE bucketcontents SET b_id=$newBucketId WHERE t_id=$newTitleId") == false ) {
-				die('error: sqlite exec failed (deleteTrack() - reorder bucketcontents #2))');
-			}
+            $db->exec("UPDATE bucketcontents SET b_id=$newBucketId WHERE t_id=$newTitleId");
             $userPlaylistArray[$i+1]['b_id'] = $newBucketId;
         }
     }
@@ -307,9 +293,7 @@ function insertDownvote($track) {
         die('error: user has already voted for the current track!');
     }
      
-    if( $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('$clientIp', $track)") == false) {
-		die('error: sqlite exec failed (insertDownvote())');
-	}
+    $db->exec("INSERT INTO downvotes (u_ip, t_id) VALUES ('$clientIp', $track)");
 	
     // close db
     $db->close();

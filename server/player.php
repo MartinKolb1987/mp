@@ -111,12 +111,8 @@ function getTrackToPlay() {
         }
 
         // switch buckets 
-        if ( $db->exec("UPDATE buckets SET b_is_active=0 WHERE b_id=$activeBucketId") == false ) {
-			die('error: sqlite exec failed (getTrackToPlay() - switch bucket #1)');
-		}
-        if ( $db->exec("UPDATE buckets SET b_is_active=1 WHERE b_id=$nextActiveBucketId") == false ) {
-			die('error: sqlite exec failed (getTrackToPlay() - switch bucket #2)');
-		}
+        $db->exec("UPDATE buckets SET b_is_active=0 WHERE b_id=$activeBucketId");
+        $db->exec("UPDATE buckets SET b_is_active=1 WHERE b_id=$nextActiveBucketId");
         $activeBucketId = $nextActiveBucketId;
 
         // look if next bucket is empty
@@ -167,7 +163,7 @@ function getTrackToPlay() {
     //echo ('next song to be played: --- t_id: '.$randomTrackId.' - t_filename: '.$randomTrackFilename.'<br/>');
 
     // set the status of the random track to currently_playing
-    $db->query("UPDATE bucketcontents SET b_currently_playing = 1 WHERE t_id=$randomTrackId");
+    $db->exec("UPDATE bucketcontents SET b_currently_playing = 1 WHERE t_id=$randomTrackId");
 
     // close db
     $db->close();
