@@ -305,12 +305,12 @@ var uploader = {
         formData.append('type', 'uploadTrack');
 		formData.append('file', givenFile);
 
+        client.addEventListener("progress", function(e) {
+            var p = Math.round(100 / e.total * e.loaded);
+            progressBarText.text(p + '%');
+        }, false);
 
-        client.onerror = function(e) {
-            alert('error, please try again (upload track went wrong)');
-        };
-
-        client.onload = function(e) {
+        client.addEventListener("load", function(e) {
             $('#bug-logger').append('done - response song upload: ' + e.target.responseText + '<br/> ');
             progressBarText.text('100%');
             progressBar.addClass('hide');
@@ -322,12 +322,35 @@ var uploader = {
             // refresh playlist, currently playing data
             playList.getPlaylist();
             currentlyPlaying.getCurrentlyPlayingData();
-        };
+        }, false);
 
-        client.upload.onprogress = function(e) {
-            var p = Math.round(100 / e.total * e.loaded);
-            progressBarText.text(p + '%');
-        };
+        client.addEventListener("error", function(e) {
+            alert('error, please try again (upload track went wrong)');
+        }, false);
+
+
+        // client.onerror = function(e) {
+        //     alert('error, please try again (upload track went wrong)');
+        // };
+
+        // client.onload = function(e) {
+        //     $('#bug-logger').append('done - response song upload: ' + e.target.responseText + '<br/> ');
+        //     progressBarText.text('100%');
+        //     progressBar.addClass('hide');
+        //     progressBar.siblings('.musichive-song-remove').removeClass('hide');
+        //     progressBar.siblings('.musichive-song-move-up').removeClass('hide');
+        //     progressBar.siblings('.musichive-song-move-down').removeClass('hide');
+        //     progressBar.parents('.musichive-playlist-entry-container').removeClass('musichive-upload-entry').addClass('musichive-editable-entry');
+            
+        //     // refresh playlist, currently playing data
+        //     playList.getPlaylist();
+        //     currentlyPlaying.getCurrentlyPlayingData();
+        // };
+
+        // client.upload.onprogress = function(e) {
+        //     var p = Math.round(100 / e.total * e.loaded);
+        //     progressBarText.text(p + '%');
+        // };
 
         client.open('POST', '/server/client.php');
         // client.open('POST', 'upload.php');
