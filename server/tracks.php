@@ -75,7 +75,7 @@ function addTrack($filename, $oldFilename) {
     // the bucket (b_id) the user wants to add the track to
     $bucketToFill = $activeBucketId + $userTracksCount + $leftover;
 	
-	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' activeBucket: '.$activeBucketId . 'filename: '.$filename);
+	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' leftover: ' . $leftover . 'activeBucket: '.$activeBucketId . 'filename: '.$filename);
 	
 	// initialize database
 	$db = new ClientDB();
