@@ -698,8 +698,6 @@ var playList = {
         up.first().addClass('hide');
         down.last().addClass('hide');
 
-        $('#bug-logger').append($('.musichive-playlist-entry-container').first().attr('data-trackid') + ' -- ' + currentlyPlaying.currentTrackId + '<br/>');
-
         if($('.musichive-playlist-entry-container').first().attr('data-trackid') == currentlyPlaying.currentTrackId){
             down.first().addClass('hide');
             editableEntry.find('.musichive-song-move-up').eq(1).addClass('hide');
