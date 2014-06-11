@@ -310,7 +310,7 @@ var uploader = {
         };
 
         client.onload = function(e) {
-            console.log(e.target.responseText);
+            $('#bug-logger').append('done - response song upload: ' + e.target.responseText + '<br/>');
             progressBarText.text('100%');
             progressBar.addClass('hide');
             progressBar.siblings('.musichive-song-remove').removeClass('hide');
