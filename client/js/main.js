@@ -305,13 +305,12 @@ var uploader = {
         formData.append('type', 'uploadTrack');
 		formData.append('file', givenFile);
 
-        client.addEventListener("progress", function(e) {
-            $('#bug-logger').append('done - response song upload - progress bar.<br/> ');
-            var p = Math.round(100 / e.total * e.loaded);
-            progressBarText.text(p + '%');
-        }, false);
 
-        client.addEventListener("load", function(e) {
+        client.onerror = function(e) {
+            alert('error, please try again (upload track went wrong)');
+        };
+
+        client.onload = function(e) {
             $('#bug-logger').append('done - response song upload: ' + e.target.responseText + '<br/> ');
             progressBarText.text('100%');
             progressBar.addClass('hide');
@@ -323,35 +322,12 @@ var uploader = {
             // refresh playlist, currently playing data
             playList.getPlaylist();
             currentlyPlaying.getCurrentlyPlayingData();
-        }, false);
+        };
 
-        client.addEventListener("error", function(e) {
-            alert('error, please try again (upload track went wrong)');
-        }, false);
-
-
-        // client.onerror = function(e) {
-        //     alert('error, please try again (upload track went wrong)');
-        // };
-
-        // client.onload = function(e) {
-        //     $('#bug-logger').append('done - response song upload: ' + e.target.responseText + '<br/> ');
-        //     progressBarText.text('100%');
-        //     progressBar.addClass('hide');
-        //     progressBar.siblings('.musichive-song-remove').removeClass('hide');
-        //     progressBar.siblings('.musichive-song-move-up').removeClass('hide');
-        //     progressBar.siblings('.musichive-song-move-down').removeClass('hide');
-        //     progressBar.parents('.musichive-playlist-entry-container').removeClass('musichive-upload-entry').addClass('musichive-editable-entry');
-            
-        //     // refresh playlist, currently playing data
-        //     playList.getPlaylist();
-        //     currentlyPlaying.getCurrentlyPlayingData();
-        // };
-
-        // client.upload.onprogress = function(e) {
-        //     var p = Math.round(100 / e.total * e.loaded);
-        //     progressBarText.text(p + '%');
-        // };
+        client.upload.onprogress = function(e) {
+            var p = Math.round(100 / e.total * e.loaded);
+            progressBarText.text(p + '%');
+        };
 
         client.open('POST', '/server/client.php');
         // client.open('POST', 'upload.php');
@@ -722,7 +698,6 @@ var playList = {
         up.first().addClass('hide');
         down.last().addClass('hide');
 
-        // disabled move up and down if currently playing song 
         if($('.musichive-playlist-entry-container').first().attr('data-trackid') == currentlyPlaying.currentTrackId){
             down.first().addClass('hide');
             editableEntry.find('.musichive-song-move-up').eq(1).addClass('hide');
