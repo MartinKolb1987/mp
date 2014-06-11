@@ -328,14 +328,10 @@ function currentlyPlaying() {
     $db = new ClientDB();
 
     $currentTrackQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_currently_playing=1");
-    $currentTrack;
+    $currentTrack = 0;
 
     while ($row = $currentTrackQuery->fetchArray(SQLITE3_ASSOC)) {
-		if(empty($row['t_id'])) {
-			$currentTrack = 0;
-		} else {
-			$currentTrack = (int)$row['t_id'];
-		}
+		$currentTrack = (int)$row['t_id'];
     }
 	
 	// close db
