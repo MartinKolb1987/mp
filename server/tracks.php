@@ -94,9 +94,9 @@ function addTrack($filename) {
 	$trueFile = $truePath . $filename;
 
     // get metadata from audio file
-    $t_artist = shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"');
-    $t_title = shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"');
-    $t_album = shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"');
+    $t_artist = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
+    $t_title = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
+    $t_album = mysqli_real_escape_string(shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
     $t_length = shell_exec('mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
 
 	$lengthDate = date_parse($t_length);
@@ -125,6 +125,11 @@ function addTrack($filename) {
     }
     
 	echo('t-id: '.$trackId);
+	
+	if(empty($trackId)) {
+		die('error: t_id not found - insert into tracks failed? (addTrack())');
+	}
+	
     $db->exec("INSERT INTO bucketcontents (t_id, b_id, b_played, b_currently_playing) VALUES ('$trackId', '$bucketToFill', 0, 0)");
     // ========================================
     
