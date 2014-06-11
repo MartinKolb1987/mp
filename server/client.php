@@ -22,15 +22,18 @@ require_once('tracks.php');
  * Rendered output will be text or JSON
  */
 function execAction() {
+	$action;
     // get action
 	try {
-		$action = $_POST['type'];
-		if(empty($action)) {
+		if(empty($_POST['type'])) {
 		    // debug mode
-		    $action = $_GET['type'];
-		    if(empty($action)) {
+		    if(empty($_GET['type'])) {
 		        die('error: no action specified (GET/POST type)');
-		    }
+		    } else {
+				$action = $_GET['type'];
+			}
+		} else {
+			$action = $_POST['type'];
 		}
 	} catch(Exception $e) {
 		//bla
