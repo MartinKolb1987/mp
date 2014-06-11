@@ -721,6 +721,7 @@ var playList = {
         up.first().addClass('hide');
         down.last().addClass('hide');
 
+        // disabled move up and down if currently playing song 
         if($('.musichive-playlist-entry-container').first().attr('data-trackid') == currentlyPlaying.currentTrackId){
             down.first().addClass('hide');
             editableEntry.find('.musichive-song-move-up').eq(1).addClass('hide');

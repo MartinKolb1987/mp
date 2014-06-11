@@ -75,7 +75,7 @@ function addTrack($filename, $oldFilename) {
     // the bucket (b_id) the user wants to add the track to
     $bucketToFill = $activeBucketId + $userTracksCount + $leftover;
 	
-	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' activeBucket: '.$activeBucketId . 'filename: '.$filename);
+	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' leftover: ' . $leftover . 'activeBucket: '.$activeBucketId . 'filename: '.$filename);
 	
 	// initialize database
 	$db = new ClientDB();
@@ -83,7 +83,9 @@ function addTrack($filename, $oldFilename) {
 	// check if bucket to fill exists
 	$bucketToFillCount = 0;
     $bucketToFillQuery = $db->query("SELECT b_id FROM buckets WHERE b_id = $bucketToFill");
-    while ($row = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC)) {
+	echo('error: DEBUG bucketToFillQuery: ');
+	print_r($bucketToFillQuery);
+    while ($row = $bucketToFillQuery->fetchArray(SQLITE3_ASSOC)) {
         $bucketToFillCount++;
     }
 	
@@ -91,17 +93,14 @@ function addTrack($filename, $oldFilename) {
 		// create new active bucket
 		$db->exec("INSERT INTO buckets (b_is_active) VALUES (0)");
 	}
-	
-	// close db
-	$db->close();
-	unset($db);
 
+	// generate true file path with filename
 	$trueFile = $truePath . $filename;
 
     // get metadata from audio file
-    $t_artist = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
-    $t_title = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
-    $t_album = mysqli_real_escape_string(false, shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
+    $t_artist = $db->escapeString(shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
+    $t_title = $db->escapeString(shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
+    $t_album = $db->escapeString(shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
     $t_length = shell_exec('mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
 
 	$lengthDate = date_parse($t_length);
@@ -110,9 +109,6 @@ function addTrack($filename, $oldFilename) {
 	if(strlen($t_title) <= 1) {
 		$t_title = $oldFilename;
 	}
-	
-	// initialize database
-	$db = new ClientDB();
 
     // insert track into db
 	echo('inserting: '.$clientIp . ' ' .$filename . ' ' .$t_artist . ' ' .$t_title . ' ' .$t_album . ' ' .$t_length);
@@ -326,10 +322,10 @@ function currentlyPlaying() {
     $db = new ClientDB();
 
     $currentTrackQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_currently_playing=1");
-    $currentTrack;
+    $currentTrack = 0;
 
     while ($row = $currentTrackQuery->fetchArray(SQLITE3_ASSOC)) {
-        $currentTrack = (int)$row['t_id'];
+		$currentTrack = (int)$row['t_id'];
     }
 	
 	// close db

@@ -257,11 +257,7 @@ function getInfo() {
 	}
     
     // get number of all connected client ips
-    $userCount = 0;
-    $getAllUsersQuery = $db->query("SELECT u_ip FROM users");
-    while ($row = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC)) {
-        $userCount++;
-    }
+    $userCount = getActiveUsers();
     
     // get user picture
     $getUserPictureQuery = $db->query("SELECT u_picture FROM users WHERE u_ip = '$clientIp'");
@@ -293,7 +289,7 @@ function getUserPlaylist() {
     $listEntryCounter = 0;
     
     while ($row = $userPlaylistQuery->fetchArray(SQLITE3_ASSOC)) {
-        $listEntryCounter++; 
+        $listEntryCounter++;
         $userPlaylistArray[(String)$listEntryCounter] = $row;
     }
     

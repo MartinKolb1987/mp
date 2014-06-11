@@ -220,15 +220,11 @@ function abortPlayback() {
 	// get currently played track
     $currentTrackId = currentlyPlaying();
 
-    // initialize database
-    $db = new ClientDB();
-
     // get user count
-    $usersCount = 0;
-    $usersQuery = $db->query("SELECT u_ip FROM users");
-    while ($row = $usersQuery->fetchArray(SQLITE3_ASSOC)) {
-        $usersCount++;
-    }
+    $usersCount = getActiveUsers();
+	
+	// initialize database
+    $db = new ClientDB();
     
     // get the current downvote-count from the played track
     $downvoteCount = 0;
