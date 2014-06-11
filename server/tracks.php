@@ -29,7 +29,7 @@ function addTrack($filename) {
     $db = new ClientDB();
 	
     // get all tracks from specific user
-    $userTracksCountQuery = $db->query("SELECT COUNT(t.t_id) FROM bucketcontents b INNER JOIN tracks t ON b.t_id = t.t_id WHERE t.u_ip = '$clientIp' AND b.b_played = 0 AND b.b_currently_playing = 1");
+    $userTracksCountQuery = $db->query("SELECT COUNT(t.t_id) FROM bucketcontents b INNER JOIN tracks t ON b.t_id = t.t_id WHERE t.u_ip = '$clientIp' AND b.b_played = 0 OR b.b_currently_playing = 1");
     $userTracksCountRow = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC);
     $userTracksCount = $userTracksCountRow['COUNT(t.t_id)'];
 	
@@ -86,7 +86,6 @@ function addTrack($filename) {
 	}
 
 	$trueFile = $truePath . $filename;
-	echo $trueFile;
 
     // get metadata from audio file
     $t_artist = shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"');
