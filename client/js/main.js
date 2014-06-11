@@ -77,10 +77,9 @@ var currentlyPlaying = {
     setEventlistener: function(){
         var that = this;
         $('#musichive-track-info').on('click', '#musichive-downvote', function(){
-            $('#bug-logger').append('downvote click<br/>');
             if(!$(this).hasClass('disabled')){
-                $('#bug-logger').append('downvote jap<br/>');
-                that.downvote.addClass(that.currentTrackId);
+                that.downvote(that.currentTrackId);
+                that.downvote.addClass('disabled');
             }
         });
     },
