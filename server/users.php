@@ -72,21 +72,17 @@ function createUser($currentIP) {
     global $truePath;
     $admin = 0;
     
-    // initialize database   
-    $db = new ClientDB();
-    
     // first user will become admin, so check if first user
-    $userCount = 0;
-    $countAllUsersQuery = $db->query("SELECT u_ip FROM users");
-    while ($row = $countAllUsersQuery->fetchArray(SQLITE3_ASSOC)) {
-        $userCount++;
-    }
+    $userCount = getActiveUsers();
     
     //echo 'there are ' . $userCount . ' users in the db<br/>';
     
-    if ($userCount == 1) {
+    if ($userCount == 0) {
         $admin = 1;
     }
+    
+    // initialize database   
+    $db = new ClientDB();
     
     // insert data
     $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('$currentIP', 'default.png', '$admin')");
