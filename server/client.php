@@ -215,7 +215,7 @@ function uploadFile($type, $file) {
             die('error: moving temp file failed (fileUpload() - audio track)');
         }
         // add to db
-        addTrack($newFilePath);
+        addTrack($newFilePath, $fileName);
     } elseif ($type == 'picture') {
         $newFilePath = $clientIp . '/user' . $fileExt;
         // move file

@@ -12,9 +12,9 @@ require_once('users.php');
 
 
 /* addTrack()
- * @param String $filename filename and path of the track
+ * @param String $filename filename and path of the track, String $oldFilename old filename from uploaded file
  */
-function addTrack($filename) {
+function addTrack($filename, $oldFilename) {
     global $clientIp;
     global $truePath;
     $bucketToFill;
@@ -103,7 +103,7 @@ function addTrack($filename) {
 	$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
 
 	if(strlen($t_title) <= 1) {
-		$t_title = $filename;
+		$t_title = $oldFilename;
 	}
 	
 	// initialize database
