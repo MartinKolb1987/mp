@@ -168,12 +168,13 @@ function uploadFile($type, $file) {
     
     // allowed file type server side check
     $checkFileType = false;
+	$fileType = strtolower($file['type']);
 	if (strlen($fileType) <= 1) {
 		// dirty hack for missing MIME type from file picker (google chrome / android 4.4)
 		$checkFileType = true;
 	} else {
-		while($fileType = array_pop($allowedFiles)) {
-			if($fileType == strtolower($file['type'])) {
+		while($allowedFileType = array_pop($allowedFiles)) {
+			if($allowedFileType == $fileType) {
 				$checkFileType = true;
 				break;
 			}
