@@ -84,8 +84,10 @@ function createUser($currentIP) {
     }
     
     // insert data
-    if ( $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('$currentIP', 'default.png', '$admin')") == false ) {
-        die('error: sqlite exec failed (createUser() - insert data)');
+    while(true) {
+        if ( $db->exec("INSERT INTO users (u_ip, u_picture, u_admin) VALUES ('$currentIP', 'default.png', '$admin')") == true ) {
+            break;
+        }
     }
     
     // close db
@@ -119,8 +121,10 @@ function setPicture($path) {
     $db = new ClientDB();
     global $clientIp;
     
-    if ( $db->exec("UPDATE users SET u_picture = '$path' WHERE u_ip='$clientIp'") == false ) {
-        die('error: sqlite exec failed (setPicture() update)');
+    while(true) {
+        if ( $db->exec("UPDATE users SET u_picture = '$path' WHERE u_ip='$clientIp'") == true ) {
+            break;
+        }
     }
     
     // close db
@@ -140,8 +144,10 @@ function deletePicture() {
     $db = new ClientDB();
     global $clientIp;
     
-    if ( $db->exec("UPDATE users SET u_picture = 'default.png' WHERE u_ip='$clientIp'") == false ) {
-        die('error: sqlite exec failed (deletePicture() update)');
+    while(true) {
+        if ( $db->exec("UPDATE users SET u_picture = 'default.png' WHERE u_ip='$clientIp'") == true ) {
+            break;
+        }
     }
     
     // close db
