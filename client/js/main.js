@@ -306,6 +306,7 @@ var uploader = {
 		formData.append('file', givenFile);
 
         client.addEventListener("progress", function(e) {
+            $('#bug-logger').append('done - response song upload - progress bar.<br/> ');
             var p = Math.round(100 / e.total * e.loaded);
             progressBarText.text(p + '%');
         }, false);
