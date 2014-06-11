@@ -642,11 +642,6 @@ var playList = {
             var trackIdOne = trackOne.attr('data-trackid');
             var trackIdTwo = trackTwo.attr('data-trackid');
             
-            if(trackTwo == currentlyPlaying.currentTrackId || trackOne == currentlyPlaying.currentTrackId){
-                alert('Song ist currently playing... swap not possible!');
-                return true;
-            }
-
             console.log(trackIdOne);
             console.log(trackIdTwo);
 
@@ -702,6 +697,11 @@ var playList = {
         down.removeClass('hide');
         up.first().addClass('hide');
         down.last().addClass('hide');
+
+        if($('.musichive-playlist-entry-container').first().attr('data-trackid') == currentlyPlaying.currentTrackId){
+            down.first().addClass('hide');
+            editableEntry.find('.musichive-song-move-up:eq(1)').addClass('hide');
+        }
 
         $('.musichive-upload-entry').first().addClass('musichive-upload-only-first');
     }
