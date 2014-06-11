@@ -60,17 +60,18 @@ function addTrack($filename) {
 		
 		// create new active bucket
 		$db->exec("INSERT INTO buckets (b_is_active) VALUES (1)");
-		$activeBucketId = getActiveBucket();
 		
 		// close db
 		$db->close();
 		unset($db);
+		
+		$activeBucketId = getActiveBucket();
 	}
 		
     // the bucket (b_id) the user wants to add the track to
     $bucketToFill = $activeBucketId + $userTracksCount + $leftover;
 	
-	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' activeBucket: '.$activeBucketId);
+	echo('error: DEBUG, bucket to fill: '.$bucketToFill.' tracksCount: '.$userTracksCount.' activeBucket: '.$activeBucketId . 'filename: '.$filename);
 	
 	// initialize database
 	$db = new ClientDB();
@@ -79,11 +80,16 @@ function addTrack($filename) {
 	$bucketToFillQuery = $db->query("SELECT COUNT(b_id) FROM buckets WHERE b_id = $bucketToFill");
     $bucketToFillCountRow = $bucketToFillQuery->fetchArray(SQLITE3_ASSOC);
     $bucketToFillCount = $bucketToFillCountRow['COUNT(b_id)'];
+	
 	if ($bucketToFillCount == 0) {
 		// create new active bucket
 		$db->exec("INSERT INTO buckets (b_is_active) VALUES (0)");
 		// hÄÄÄ? $bucketToFill = getActiveBucket();
 	}
+	
+	// close db
+	$db->close();
+	unset($db);
 
 	$trueFile = $truePath . $filename;
 
@@ -100,12 +106,8 @@ function addTrack($filename) {
 		$t_title = $filename;
 	}
 	
-	/*$randomNo = rand(0, 999);
-    
-	$t_artist = 'testartist' . $randomNo;
-	$t_title = 'testtitle' . $randomNo;
-	$t_album = 'testalbum' . $randomNo;
-	$t_length = (int)$randomNo;*/
+	// initialize database
+	$db = new ClientDB();
 
     // insert track into db
     $db->exec("INSERT INTO tracks (u_ip, t_filename, t_artist, t_title, t_album, t_length) VALUES ('$clientIp', '$filename', '$t_artist', '$t_title', '$t_album', $t_length)");
