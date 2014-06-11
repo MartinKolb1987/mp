@@ -325,7 +325,6 @@ var uploader = {
         };
 
         client.upload.onprogress = function(e) {
-            $('#bug-logger').append('upload - onprogress: ' + e.target.responseText + '<br/> ');
             var p = Math.round(100 / e.total * e.loaded);
             progressBarText.text(p + '%');
         };
