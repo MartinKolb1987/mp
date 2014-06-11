@@ -330,7 +330,11 @@ function currentlyPlaying() {
     $currentTrack;
 
     while ($row = $currentTrackQuery->fetchArray(SQLITE3_ASSOC)) {
-        $currentTrack = (int)$row['t_id'];
+		if(empty($row)) {
+			$currentTrack = 0;
+		} else {
+			$currentTrack = (int)$row['t_id'];
+		}
     }
 	
 	// close db
