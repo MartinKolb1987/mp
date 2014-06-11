@@ -70,9 +70,11 @@ function getTrackToPlay() {
     $db = new ClientDB();
 	
 	// check if a track is currently playing
-	$currentlyPlayingTrackQuery = $db->query("SELECT COUNT(t_id) FROM bucketcontents WHERE b_id = $activeBucketId AND b_currently_playing = 1");
-    $currentlyPlayingTrackCountRow = $currentlyPlayingTrackQuery->fetchArray(SQLITE3_ASSOC);
-    $currentlyPlayingTrackCount = $currentlyPlayingTrackCountRow['COUNT(t_id)'];
+    $currentlyPlayingTrackCount = 0;
+	$currentlyPlayingTrackQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_id = $activeBucketId AND b_currently_playing = 1");
+    while ($row = $currentlyPlayingTrackQuery->fetchArray(SQLITE3_ASSOC)) {
+        $currentlyPlayingTrackCount++;
+    }
 	if ($currentlyPlayingTrackCount == 1) {
 		// replay currently playing track
 		$currentlyPlayingFilename;
@@ -87,9 +89,11 @@ function getTrackToPlay() {
 	}
 
     // get all unplayed tracks within the active bucket)
-    $bucketTracksQuery = $db->query("SELECT COUNT(t_id) FROM bucketcontents WHERE b_id = $activeBucketId AND b_played = 0");
-    $bucketTracksCountRow = $bucketTracksQuery->fetchArray(SQLITE3_ASSOC);
-    $bucketTracksCount = $bucketTracksCountRow['COUNT(t_id)'];
+    $bucketTracksCount = 0;
+    $bucketTracksQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_id = $activeBucketId AND b_played = 0");
+    while ($row = $bucketTracksQuery->fetchArray(SQLITE3_ASSOC)) {
+        $bucketTracksCount++;
+    }
 
     // switch to next bucket if every track in active bucket is played and next bucket exists
     if ($bucketTracksCount == 0) {
@@ -97,9 +101,11 @@ function getTrackToPlay() {
 
         // look if next bucket exists
         $nextActiveBucketId = $activeBucketId + 1;
-        $nextBucket = $db->query("SELECT COUNT(b_id) FROM buckets WHERE b_id = $nextActiveBucketId");
-        $nextBucketCountRow = $nextBucket->fetchArray(SQLITE3_ASSOC);
-        $nextBucketCount = $nextBucketCountRow['COUNT(b_id)'];
+        $nextBucketCount = 0;
+        $nextBucket = $db->query("SELECT b_id FROM buckets WHERE b_id = $nextActiveBucketId");
+        while ($row = $nextBucket->fetchArray(SQLITE3_ASSOC)) {
+            $nextBucketCount++;
+        }
         if ($nextBucketCount == 0) {
             //echo('error: there are no more buckets to play from.<br/>');
 
@@ -116,9 +122,11 @@ function getTrackToPlay() {
         $activeBucketId = $nextActiveBucketId;
 
         // look if next bucket is empty
-        $bucketTracksQuery = $db->query("SELECT COUNT(t_id) FROM bucketcontents WHERE b_id = $activeBucketId AND b_played = 0");
-        $bucketTracksCountRow = $bucketTracksQuery->fetchArray(SQLITE3_ASSOC);
-        $bucketTracksCount = $bucketTracksCountRow['COUNT(t_id)'];
+        $bucketTracksCount = 0;
+        $bucketTracksQuery = $db->query("SELECT t_id FROM bucketcontents WHERE b_id = $activeBucketId AND b_played = 0");
+        while ($row = $nextBucket->fetchArray(SQLITE3_ASSOC)) {
+            $bucketTracksCount++;
+        }
         if ($bucketTracksCount == 0) {
             //echo('error: the next bucket is empty.<br/>');
 
@@ -216,19 +224,25 @@ function abortPlayback() {
     $db = new ClientDB();
 
     // get user count
-    $usersQuery = $db->query("SELECT COUNT(u_ip) FROM users");
-    $usersCountRow = $usersQuery->fetchArray(SQLITE3_ASSOC);
-    $usersCount = $usersCountRow['COUNT(u_ip)'];
+    $usersCount = 0;
+    $usersQuery = $db->query("SELECT u_ip FROM users");
+    while ($row = $usersQuery->fetchArray(SQLITE3_ASSOC)) {
+        $usersCount++;
+    }
     
     // get the current downvote-count from the played track
-    $downvoteQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE t_id = '$currentTrackId'");
-    $downvoteCountRow = $downvoteQuery->fetchArray(SQLITE3_ASSOC);
-    $downvoteCount = $downvoteCountRow['COUNT(u_ip)'];
+    $downvoteCount = 0;
+    $downvoteQuery = $db->query("SELECT u_ip FROM downvotes WHERE t_id = '$currentTrackId'");
+    while ($row = $downvoteQuery->fetchArray(SQLITE3_ASSOC)) {
+        $downvoteCount++;
+    }
 	
 	// check if user aborted track (super admin downvote)
-	$deletedQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE u_ip = '127.0.0.1' AND t_id = '$currentTrackId'");
-    $deletedCountRow = $deletedQuery->fetchArray(SQLITE3_ASSOC);
-    $deletedCount = (int)$deletedCountRow['COUNT(u_ip)'];
+    $deletedCount = 0;
+	$deletedQuery = $db->query("SELECT u_ip FROM downvotes WHERE u_ip = '127.0.0.1' AND t_id = '$currentTrackId'");
+    while ($row = $deletedQuery->fetchArray(SQLITE3_ASSOC)) {
+        $deletedCount++;
+    }
 
     // close db
     $db->close();

@@ -29,18 +29,22 @@ function addTrack($filename, $oldFilename) {
     $db = new ClientDB();
 	
     // get all tracks from specific user
-    $userTracksCountQuery = $db->query("SELECT COUNT(t.t_id) FROM bucketcontents b INNER JOIN tracks t ON b.t_id = t.t_id WHERE t.u_ip = '$clientIp' AND (b.b_played = 0 OR b.b_currently_playing = 1)");
-    $userTracksCountRow = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC);
-    $userTracksCount = $userTracksCountRow['COUNT(t.t_id)'];
+    $userTracksCount = 0;
+    $userTracksCountQuery = $db->query("SELECT t.t_id FROM bucketcontents b INNER JOIN tracks t ON b.t_id = t.t_id WHERE t.u_ip = '$clientIp' AND (b.b_played = 0 OR b.b_currently_playing = 1)");
+    while ($row = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC)) {
+        $userTracksCount++;
+    }
 	
     if ($userTracksCount >= 5) {
         die('error: too many tracks');
     }
 	
 	// check if leftover
-	$leftoverTrackCountQuery = $db->query("SELECT COUNT(t.t_id) FROM bucketcontents bc INNER JOIN tracks t ON bc.t_id = t.t_id INNER JOIN buckets b ON bc.b_id = b.b_id WHERE t.u_ip = '$clientIp' AND bc.b_played = 1 AND bc.b_currently_playing = 0 AND b.b_is_active = 1");
-	$leftoverTracksCountRow = $leftoverTrackCountQuery->fetchArray(SQLITE3_ASSOC);
-    $leftoverTracksCount = $leftoverTracksCountRow['COUNT(t.t_id)'];
+    $leftoverTracksCount = 0;
+	$leftoverTrackCountQuery = $db->query("SELECT t.t_id FROM bucketcontents bc INNER JOIN tracks t ON bc.t_id = t.t_id INNER JOIN buckets b ON bc.b_id = b.b_id WHERE t.u_ip = '$clientIp' AND bc.b_played = 1 AND bc.b_currently_playing = 0 AND b.b_is_active = 1");
+	while ($row = $leftoverTrackCountQuery->fetchArray(SQLITE3_ASSOC)) {
+        $leftoverTracksCount++;
+    }
 	
 	if ($leftoverTracksCount > 0) {
         $leftover = 1;
@@ -77,9 +81,11 @@ function addTrack($filename, $oldFilename) {
 	$db = new ClientDB();
 	
 	// check if bucket to fill exists
-	$bucketToFillQuery = $db->query("SELECT COUNT(b_id) FROM buckets WHERE b_id = $bucketToFill");
-    $bucketToFillCountRow = $bucketToFillQuery->fetchArray(SQLITE3_ASSOC);
-    $bucketToFillCount = $bucketToFillCountRow['COUNT(b_id)'];
+	$bucketToFillCount = 0;
+    $bucketToFillQuery = $db->query("SELECT b_id FROM buckets WHERE b_id = $bucketToFill");
+    while ($row = $userTracksCountQuery->fetchArray(SQLITE3_ASSOC)) {
+        $bucketToFillCount++;
+    }
 	
 	if ($bucketToFillCount == 0) {
 		// create new active bucket

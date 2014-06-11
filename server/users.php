@@ -39,9 +39,11 @@ function checkUser() {
     $currentIP = getClientIP();
     
     // get user entries with current user ip
-    $currentUserQuery = $db->query("SELECT COUNT(u_ip) FROM users WHERE u_ip='$currentIP'");
-    $currentUserRow = $currentUserQuery->fetchArray(SQLITE3_ASSOC);
-    $currentUserCount = $currentUserRow['COUNT(u_ip)'];
+    $currentUserCount = 0;
+    $currentUserQuery = $db->query("SELECT u_ip FROM users WHERE u_ip='$currentIP'");
+    while ($row = $currentUserQuery->fetchArray(SQLITE3_ASSOC)) {
+        $currentUserCount++;
+    }
     
     // close db
     $db->close();
@@ -74,9 +76,11 @@ function createUser($currentIP) {
     $db = new ClientDB();
     
     // first user will become admin, so check if first user
-    $countAllUsersQuery = $db->query("SELECT COUNT(u_ip) FROM users");
-    $countAllUsersRow = $countAllUsersQuery->fetchArray(SQLITE3_ASSOC);
-    $userCount = $countAllUsersRow['COUNT(u_ip)'];
+    $userCount = 0;
+    $countAllUsersQuery = $db->query("SELECT u_ip FROM users");
+    while ($row = $countAllUsersQuery->fetchArray(SQLITE3_ASSOC)) {
+        $userCount++;
+    }
     
     //echo 'there are ' . $userCount . ' users in the db<br/>';
     

@@ -248,16 +248,20 @@ function getInfo() {
 
 	// user downvote check
 	if(empty($currentTrack) == false) {
-		$userDownvoteQuery = $db->query("SELECT COUNT(u_ip) FROM downvotes WHERE t_id=$currentTrack AND u_ip='$clientIp'");
-		$userDownvoteArray = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC);
-		$userDownvoteCount = $userDownvoteArray['COUNT(u_ip)'];
+		$userDownvoteCount = 0;
+        $userDownvoteQuery = $db->query("SELECT u_ip FROM downvotes WHERE t_id=$currentTrack AND u_ip='$clientIp'");
+        while ($row = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC)) {
+            $userDownvoteCount++;
+        }
 		$currentlyPlayingArray['downvote'] = $userDownvoteCount;
 	}
     
     // get number of all connected client ips
-    $getAllUsersQuery = $db->query("SELECT COUNT(u_ip) FROM users");
-    $getAllUsersArray = $getAllUsersQuery->fetchArray(SQLITE3_ASSOC);
-    $userCount = $getAllUsersArray['COUNT(u_ip)'];
+    $userCount = 0;
+    $getAllUsersQuery = $db->query("SELECT u_ip FROM users");
+    while ($row = $userDownvoteQuery->fetchArray(SQLITE3_ASSOC)) {
+        $userCount++;
+    }
     
     // get user picture
     $getUserPictureQuery = $db->query("SELECT u_picture FROM users WHERE u_ip = '$clientIp'");
