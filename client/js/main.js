@@ -48,6 +48,7 @@ var currentlyPlaying = {
     currentTrackId: 0,
     oldCurrentTrackId: 0,
     oldTrackId: 0,
+    oldUserImage: '',
 
     internetAccess: '',
     infoUsers: '',
@@ -130,6 +131,16 @@ var currentlyPlaying = {
     renderData: function(data){
 
         this.currentTrackId = data.musicHiveInfo.currentlyPlaying.t_id;
+
+        // check if current playing user image is updated
+        if(data.musicHiveInfo.currentlyPlaying.u_picture !== this.oldUserImage){
+            if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
+                this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
+            } else {
+                this.userImage.css('background-image', 'url(img/user-image.jpg)');
+            }
+            this.oldUserImage = data.musicHiveInfo.currentlyPlaying.u_picture;
+        }
 
         // check if current playing song already shown
         if(this.currentTrackId === this.oldCurrentTrackId){
