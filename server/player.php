@@ -154,11 +154,16 @@ function getTrackToPlay() {
     // count the tracks within the array
     $bucketTracksCount = ((int)count($unplayedBucketTracks) - 1);
 
-    // get a random track within all unplayed tracks
-    $randomTrackNumber = rand(0, $bucketTracksCount);
-
-    // get the id of the random track
-    $randomTrackId = $unplayedBucketTracks[$randomTrackNumber];
+    // check if there is only one element
+	if($bucketTracksCount == 0) {
+		// no random because only one element exists
+		$randomTrackId = 0;
+	} else {
+		// get a random track within all unplayed tracks
+		$randomTrackNumber = rand(0, $bucketTracksCount);
+		// get the id of the random track
+		$randomTrackId = $unplayedBucketTracks[$randomTrackNumber];
+	}
 
     // get the u_ip and t_filename from the random track
     $randomTrackFilename;
