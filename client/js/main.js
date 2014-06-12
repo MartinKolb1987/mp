@@ -130,6 +130,18 @@ var currentlyPlaying = {
 
     renderData: function(data){
 
+        if(data.musicHiveInfo.currentlyPlaying == false) {
+            this.downvote.addClass('hide');
+            this.trackText.text('No song available');
+            this.artistText.text('');
+            this.albumText.text('');
+            this.durationText.text('');
+            this.userImage.css('background-image', 'url(img/user-image.jpg)');
+            return true;
+        } else {
+            this.downvote.removeClass('hide');
+        }
+
         this.currentTrackId = data.musicHiveInfo.currentlyPlaying.t_id;
 
         // check if current playing user image is updated 
@@ -153,18 +165,6 @@ var currentlyPlaying = {
             this.internetAccess.text('No');
         }
         this.infoUsers.text(data.musicHiveInfo.status.users);
-
-		if(data.musicHiveInfo.currentlyPlaying == false) {
-            this.downvote.addClass('hide');
-            this.trackText.text('No song available');
-            this.artistText.text('');
-            this.albumText.text('');
-            this.durationText.text('');
-            this.userImage.css('background-image', 'url(img/user-image.jpg)');
-            return true;
-        } else {
-            this.downvote.removeClass('hide');
-        }
 
         this.trackText.text(data.musicHiveInfo.currentlyPlaying.t_title);
         this.artistText.text(data.musicHiveInfo.currentlyPlaying.t_artist);
@@ -224,7 +224,7 @@ var currentlyPlaying = {
 
 var uploader = {
 
-    allowedFileTypes: ['audio/mpeg', 'audio/x-mpeg', 'audio/x-mpeg-3', 'audio/mp3', 'audio/mp4', 'audio/ogg', 'audio/opus', 'audio/vorbis', 'audio/vnd.wav', 'audio/wav', 'audio/x-wav', 'audio/webm', 'audio/aiff', 'audio/x-aiff'],
+    allowedFileTypes: ['audio/mpeg', 'audio/x-mpeg', 'audio/x-mpeg-3', 'audio/mp3', 'audio/mp4', 'audio/ogg', 'audio/opus', 'audio/vorbis', 'audio/vnd.wav', 'audio/wav', 'audio/x-wav', 'audio/webm', 'audio/aiff', 'audio/x-aiff', 'video/ogg'],
     filename: '',
     currentlyUploading: false, 
 
