@@ -200,7 +200,9 @@ var currentlyPlaying = {
         var that = this;
         setInterval(function(){
             if(that.currentTrackId !== that.oldTrackId){
-                playList.getPlaylist();
+                if(!uploader.currentlyUploading){
+                    playList.getPlaylist();
+                }
                 that.oldTrackId = that.currentTrackId;
             }
         }, that.playlistUpdateIntervalValue);
@@ -213,6 +215,7 @@ var uploader = {
 
     allowedFileTypes: ['audio/mpeg', 'audio/x-mpeg', 'audio/x-mpeg-3', 'audio/mp3', 'audio/mp4', 'audio/ogg', 'audio/opus', 'audio/vorbis', 'audio/vnd.wav', 'audio/wav', 'audio/x-wav', 'audio/webm', 'audio/aiff', 'audio/x-aiff'],
     filename: '',
+    currentlyUploading: false, 
 
     init: function(){
         this.setEventlistener();
@@ -304,9 +307,10 @@ var uploader = {
         formData.append('filename', that.filename);*/
         formData.append('type', 'uploadTrack');
 		formData.append('file', givenFile);
-
+        that.currentlyUploading = true;
 
         client.onerror = function(e) {
+            that.currentlyUploading = false;
             alert('error, please try again (upload track went wrong)');
         };
 
@@ -319,6 +323,7 @@ var uploader = {
             progressBar.siblings('.musichive-song-move-down').removeClass('hide');
             progressBar.parents('.musichive-playlist-entry-container').removeClass('musichive-upload-entry').addClass('musichive-editable-entry');
             
+            that.currentlyUploading = false;
             // refresh playlist, currently playing data
             playList.getPlaylist();
             currentlyPlaying.getCurrentlyPlayingData();
@@ -327,6 +332,7 @@ var uploader = {
         client.upload.onprogress = function(e) {
             var p = Math.round(100 / e.total * e.loaded);
             progressBarText.text(p + '%');
+            that.currentlyUploading = true;
         };
 
         client.open('POST', '/server/client.php');
