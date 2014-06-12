@@ -147,9 +147,9 @@ function getTrackToPlay() {
 	while ($row = $unplayedTracksQuery->fetchArray(SQLITE3_ASSOC)) {
         array_push($unplayedBucketTracks, (int)$row['t_id']);
     }
-    /*echo ('BucketPlaylist:');
+    echo ('BucketPlaylist:');
     print_r($unplayedBucketTracks);
-    echo ('<br/>');*/
+    echo ('<br/>');
 
     // count the tracks within the array
     $bucketTracksCount = ((int)count($unplayedBucketTracks) - 1);
@@ -164,6 +164,8 @@ function getTrackToPlay() {
 		// get the id of the random track
 		$randomTrackId = $unplayedBucketTracks[$randomTrackNumber];
 	}
+	
+	echo('randomTrackId: '.$randomTrackId.'<br/>');
 
     // get the u_ip and t_filename from the random track
     $randomTrackFilename;
@@ -173,7 +175,7 @@ function getTrackToPlay() {
         $randomTrackFilename = $row['t_filename'];
     }
 
-    //echo ('next song to be played: --- t_id: '.$randomTrackId.' - t_filename: '.$randomTrackFilename.'<br/>');
+    echo ('next song to be played: --- t_id: '.$randomTrackId.' - t_filename: '.$randomTrackFilename.'<br/>');
 
     // set the status of the random track to currently_playing
     $db->exec("UPDATE bucketcontents SET b_currently_playing = 1 WHERE t_id=$randomTrackId");
