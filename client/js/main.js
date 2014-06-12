@@ -132,7 +132,7 @@ var currentlyPlaying = {
 
         this.currentTrackId = data.musicHiveInfo.currentlyPlaying.t_id;
 
-        // check if current playing user image is updated
+        // check if current playing user image is updated 
         if(data.musicHiveInfo.currentlyPlaying.u_picture !== this.oldUserImage){
             if(data.musicHiveInfo.currentlyPlaying.u_picture.length > 0){
                 this.userImage.css('background-image', 'url(' + '/server/userdata/' + data.musicHiveInfo.currentlyPlaying.u_picture + ')');
