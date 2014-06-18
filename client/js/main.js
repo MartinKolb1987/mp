@@ -1,5 +1,5 @@
 var watchDeviceOrientation;
-var currentSkin;
+var currentSkin = 'normal';
 
 $(document).ready(function() {
     
@@ -34,10 +34,11 @@ $(document).ready(function() {
 	try {
 		window.addEventListener('devicelight', function(event) {
 			// if lux > 1000, direct daylight on device
+			$('#light-logger').text(event.value);
 			if(event.value > 1000) {
 				// change to high contrast skin
 				changeSkin('high');
-			} else if (event.value < 50) {
+			} else if (event.value < 10) {
 				changeSkin('low');
 			} else {
 				changeSkin('normal');
@@ -56,6 +57,10 @@ $(document).ready(function() {
     // background and scroll info text
     toggleBackground();
     scrollInfoText();
+	
+	// toggle skin button for the first time for correct value
+	$('#musichive-btn-skin-'+currentSkin).button('toggle');
+	changeSkin('normal');
 });
 
 
@@ -232,21 +237,7 @@ var currentlyPlaying = {
                 that.oldTrackId = that.currentTrackId;
             }
         }, that.playlistUpdateIntervalValue);
-    },
-	
-	/**
-	 * change skin (low/high contrast mode)
-	 * @param String skin name - high, normal or low
-	 */
-	changeSkin: function(skin) {
-		if (skin == 'high') {
-			$('#musichive-container').css('color', black);
-		} else if (skin == 'normal') {
-			$('#musichive-container').css('color', '333');
-		} else if (skin == 'low') {
-			$('#musichive-container').css('color', '666');
-		}
-	}
+    }
 
 };
 
@@ -783,4 +774,27 @@ function scrollInfoText() {
     } else {
         $('#musichive-player-album').removeClass('marquee');
     }
+}
+
+/**
+ * change skin (low/high contrast mode)
+ * @param String skin name - high, normal or low
+ */
+function changeSkin(skin) {
+	// change buttons in settings
+	$('#musichive-btn-skin-'+currentSkin).button('toggle');
+	currentSkin = skin;
+	$('#musichive-btn-skin-'+skin).button('toggle');
+	
+	// change skin colors
+	if (skin == 'high') {
+		$('#musichive-container').css('color', 'black');
+		$('body').css('background-color', '#fff');
+	} else if (skin == 'normal') {
+		$('#musichive-container').css('color', '#333');
+		$('body').css('background-color', '#eee');
+	} else if (skin == 'low') {
+		$('#musichive-container').css('color', '#666');
+		$('body').css('background-color', '#ddd');
+	}
 }
