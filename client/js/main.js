@@ -1,4 +1,5 @@
 var watchDeviceOrientation;
+var currentSkin;
 
 $(document).ready(function() {
     
@@ -19,7 +20,6 @@ $(document).ready(function() {
 
     // Add a media query change listener
     watchDeviceOrientation = window.matchMedia("(orientation: portrait)");
-    
     watchDeviceOrientation.addListener(function(m) {
         // window.location.reload();
     });
@@ -28,6 +28,24 @@ $(document).ready(function() {
         toggleBackground();
         scrollInfoText();
     }
+	
+	// DeviceLightEvent listener
+	// see https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent
+	try {
+		window.addEventListener('devicelight', function(event) {
+			// if lux > 1000, direct daylight on device
+			if(event.value > 1000) {
+				// change to high contrast skin
+				changeSkin('high');
+			} else if (event.value < 50) {
+				changeSkin('low');
+			} else {
+				changeSkin('normal');
+			}
+		});
+	} catch(e) {
+		// yup.
+	}
     
     // init all needed stuff
     currentlyPlaying.init();
@@ -90,8 +108,7 @@ var currentlyPlaying = {
 
         $.ajax({
             type: 'GET',
-            url: '/server/client.php', // has to be changed
-            // url: 'json/musicHiveInfo.json', // has to be changed
+            url: '/server/client.php',
             data: { 
                 type: 'getInfo'
             }
@@ -111,8 +128,7 @@ var currentlyPlaying = {
         var that = this;
         $.ajax({
             type: 'POST',
-            url: '/server/client.php', // has to be changed
-            // url: 'upload.php', // has to be changed
+            url: '/server/client.php',
             data: { 
                 type: 'downvoteTrack',
                 trackId: trackId
@@ -129,7 +145,6 @@ var currentlyPlaying = {
     },
 
     renderData: function(data){
-
         if(data.musicHiveInfo.currentlyPlaying == false) {
             this.downvote.addClass('hide');
             this.trackText.text('No song available');
@@ -217,10 +232,23 @@ var currentlyPlaying = {
                 that.oldTrackId = that.currentTrackId;
             }
         }, that.playlistUpdateIntervalValue);
-    }
+    },
+	
+	/**
+	 * change skin (low/high contrast mode)
+	 * @param String skin name - high, normal or low
+	 */
+	changeSkin: function(skin) {
+		if (skin == 'high') {
+			$('#musichive-container').css('color', black);
+		} else if (skin == 'normal') {
+			$('#musichive-container').css('color', '333');
+		} else if (skin == 'low') {
+			$('#musichive-container').css('color', '666');
+		}
+	}
 
 };
-
 
 var uploader = {
 
