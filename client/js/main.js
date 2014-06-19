@@ -47,6 +47,16 @@ $(document).ready(function() {
 	} catch(e) {
 		// yup.
 	}
+	// bind skin button actions
+	$('#musichive-btn-skin-low').click(function() {
+		changeSkin('low')
+	});
+	$('#musichive-btn-skin-normal').click(function() {
+		changeSkin('normal')
+	});
+	$('#musichive-btn-skin-high').click(function() {
+		changeSkin('high')
+	});
     
     // init all needed stuff
     currentlyPlaying.init();
@@ -102,9 +112,14 @@ var currentlyPlaying = {
         var that = this;
         $('#musichive-track-info').on('click', '#musichive-downvote', function(){
             if(!$(this).hasClass('disabled')){
+				$(this).popover({content:'Your downvote has been counted. The track will be skipped after a majority vote has been reached.'});
                 that.downvoteSend(that.currentTrackId);
                 that.downvote.addClass('disabled');
-            }
+            } else {
+				$(this).popover({content:'Your downvote has already been counted! You cannot vote twice for the same track.'});
+			}
+			$(this).popover('show');
+			setTimeout("$('#musichive-downvote').popover('hide')", 7000);
         });
     },
 
@@ -361,7 +376,12 @@ var uploader = {
 
         client.upload.onprogress = function(e) {
             var p = Math.round(100 / e.total * e.loaded);
-            progressBarText.text(p + '%');
+			if (p <= 99) {
+				progressBarText.text(p + '%');
+			} else {
+				progressBarText.text('');
+				$(progressBarText).addClass('glyphicon glyphicon-cog spinner');
+			}
             that.currentlyUploading = true;
         };
 
@@ -740,9 +760,14 @@ var playList = {
         }
 
         $('.musichive-upload-entry').first().addClass('musichive-upload-only-first');
+		scrollInfoText();
     }
 };
 
+
+/**
+ * toggle background image for large desktop mode
+ */
 function toggleBackground() {
     if($(window).width() < 1500) {
         $('#musichive-background').removeClass('musichive-hex');
@@ -753,48 +778,84 @@ function toggleBackground() {
     }
 }
 
+
+/**
+ * enable text scrolling for entries that are too long
+ */
 function scrollInfoText() {
+	// resize text containers to fit
+	var maxWidth = $('#musichive-container').width();
+	var entryNoWidth = $('.musichive-playlist-entry-number').width();
+	
+	$('.musichive-playlist-entry-container').each(function() {
+		var countButtonWidth = 0;
+		 $(this).children(':nth-child(2)').children().each(function() {
+			if ($(this).hasClass('musichive-table-icon-container') && !$(this).hasClass('hide')) {
+				countButtonWidth = countButtonWidth + $(this).width() + 12;
+			}
+		 });
+		 // playlist text entry width = #musichive-container - entry number - buttons
+		 var newTextWidth = maxWidth - entryNoWidth - countButtonWidth;
+		 //console.log('ntw: '+newTextWidth+' btw: '+countButtonWidth);
+		 $(this).children(':nth-child(2)').children(':nth-child(1)').children(':nth-child(1)').css('max-width', newTextWidth+'px');
+		 // set marquee class for entries that are too long
+		 var currentEntryWidth = $(this).children(':nth-child(2)').children(':nth-child(1)').children(':nth-child(1)').children(':nth-child(1)').width();
+		 if (currentEntryWidth > newTextWidth) {
+			$(this).children(':nth-child(2)').children(':nth-child(1)').children(':nth-child(1)').addClass('marquee');
+		 } else {
+			$(this).children(':nth-child(2)').children(':nth-child(1)').children(':nth-child(1)').removeClass('marquee');
+		 }
+	});
     
-    // scroll text if it is too long
-    
-    if ($('#musichive-player-trackid').width() < $('#musichive-player-trackid-text').width()) {
+    // player area scrolling
+	// maximum text with = #musichive-container - DJ picture
+	var djImageWidth = $('#musichive-user-image-container').width() + 12;
+    var playerTextWidth = maxWidth - djImageWidth;
+	$('#musichive-player-trackid').width(playerTextWidth+'px');
+	$('#musichive-player-artist').width(playerTextWidth+'px');
+	$('#musichive-player-album').width(playerTextWidth+'px');
+	
+    if (playerTextWidth < $('#musichive-player-trackid-text').width()) {
         $('#musichive-player-trackid').addClass('marquee');
     } else {
         $('#musichive-player-trackid').removeClass('marquee');
     }
     
-    if ($('#musichive-player-artist').width() < $('#musichive-player-artist-text').width()) {
+    if (playerTextWidth < $('#musichive-player-artist-text').width()) {
         $('#musichive-player-artist').addClass('marquee');
     } else {
         $('#musichive-player-artist').removeClass('marquee');
     }
     
-    if ($('#musichive-player-album').width() < $('#musichive-player-album-text').width()) {
+    if (playerTextWidth < $('#musichive-player-album-text').width()) {
         $('#musichive-player-album').addClass('marquee');
     } else {
         $('#musichive-player-album').removeClass('marquee');
     }
 }
 
+
 /**
- * change skin (low/high contrast mode)
+ * change skin (low/normal/high contrast mode)
  * @param String skin name - high, normal or low
  */
 function changeSkin(skin) {
-	// change buttons in settings
-	$('#musichive-btn-skin-'+currentSkin).button('toggle');
-	currentSkin = skin;
-	$('#musichive-btn-skin-'+skin).button('toggle');
-	
-	// change skin colors
-	if (skin == 'high') {
-		$('#musichive-container').css('color', 'black');
-		$('body').css('background-color', '#fff');
-	} else if (skin == 'normal') {
-		$('#musichive-container').css('color', '#333');
-		$('body').css('background-color', '#eee');
-	} else if (skin == 'low') {
-		$('#musichive-container').css('color', '#666');
-		$('body').css('background-color', '#ddd');
+	if (currentSkin != skin) {
+		// change buttons in settings
+		$('#musichive-btn-skin-'+currentSkin).button('toggle');
+		currentSkin = skin;
+		$('#musichive-btn-skin-'+skin).button('toggle');
+		
+		// change skin colors
+		if (skin == 'high') {
+			$('#musichive-container').css('color', 'black');
+			$('body').css('background-color', '#fff');
+		} else if (skin == 'normal') {
+			$('#musichive-container').css('color', '#333');
+			$('body').css('background-color', '#eee');
+		} else if (skin == 'low') {
+			$('#musichive-container').css('color', '#666');
+			$('body').css('background-color', '#ddd');
+		}
 	}
 }

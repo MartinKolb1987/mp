@@ -273,7 +273,6 @@ ul.nav-tabs {
 .musichive-playlist-entry-title {
     white-space: nowrap;
     overflow: hidden;
-    max-width: 35vw;
 }
 
 .musichive-table-icon-container{
@@ -418,10 +417,26 @@ ul.nav-tabs {
 
 @keyframes marquee {
     from  { text-indent:  2% }
-    to    { text-indent: -35% }
+    to    { text-indent: -50% }
 }
 
 @-webkit-keyframes marquee {
     from  { text-indent:  2% }
-    to    { text-indent: -35% }
+    to    { text-indent: -50% }
+}
+
+/* spinner loading animation */
+.spinner {
+    animation: spinner 0.6s linear 0s infinite;
+    -webkit-animation: spinner 0.6s linear 0s infinite;
+}
+
+@keyframes spinner {
+  from { transform: rotate(0deg) }
+  to   { transform: rotate(360deg) }
+}
+
+@-webkit-keyframes spinner {
+  from { -webkit-transform: rotate(0deg) }
+  to   { -webkit-transform: rotate(360deg) }
 }
