@@ -305,6 +305,7 @@ var uploader = {
             $(this).siblings('.musichive-upload-song-abort').addClass('hide');
             $(this).addClass('hide');
             progressBar.removeClass('hide');
+			scrollInfoText();
         });
 
         $('#all-entries').on('click', '.musichive-upload-song-abort',function(){
