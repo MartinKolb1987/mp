@@ -5,7 +5,7 @@ $(document).ready(function() {
 	
 	// get location and redirect if neccessary
 	var currentUrl = window.location;
-	if (currentUrl != 'http://music-hive.de' || currentUrl != 'http://192.168.1.80' || currentUrl != 'http://p1.condime.de') {
+	if (currentUrl != 'http://music-hive.de' && currentUrl != 'http://192.168.1.80' && currentUrl != 'http://p1.condime.de') {
 		window.location = 'http://music-hive.de';
 	}
     
