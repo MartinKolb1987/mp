@@ -4,8 +4,8 @@ var currentSkin = 'normal';
 $(document).ready(function() {
 	
 	// get location and redirect if neccessary
-	var currentUrl = window.location;
-	if (currentUrl != 'http://music-hive.de' && currentUrl != 'http://192.168.1.80' && currentUrl != 'http://p1.condime.de') {
+	var currentUrl = String(window.location);
+	if (currentUrl.indexOf('music-hive.de') === -1  && currentUrl.indexOf('192.168.1.80') === -1 && currentUrl.indexOf('http://p1.condime.de') === -1) {
 		window.location = 'http://music-hive.de';
 	}
     
