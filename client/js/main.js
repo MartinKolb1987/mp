@@ -111,14 +111,17 @@ var currentlyPlaying = {
     setEventlistener: function(){
         var that = this;
         $('#musichive-track-info').on('click', '#musichive-downvote', function(){
-            if(!$(this).hasClass('disabled')){
-				$(this).popover({content:'Your downvote has been counted. The track will be skipped after a majority vote has been reached.'});
-                that.downvoteSend(that.currentTrackId);
-                that.downvote.addClass('disabled');
-            } else {
-				$(this).popover({content:'Your downvote has already been counted! You cannot vote twice for the same track.'});
+			// init popover
+			$('#musichive-downvote').popover();
+			var popover = $('#musichive-downvote').data('bs.popover');
+			if(!$(this).hasClass('disabled')){
+				popover.options.content = 'Your downvote has been counted. The track will be skipped after a majority vote has been reached.';
+				that.downvoteSend(that.currentTrackId);
+				that.downvote.addClass('disabled');
+			} else {
+				popover.options.content = 'Your downvote has already been counted! You cannot vote twice for the same track.';
 			}
-			$(this).popover('show');
+			$('#musichive-downvote').popover('show');
 			setTimeout("$('#musichive-downvote').popover('hide')", 7000);
         });
     },

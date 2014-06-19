@@ -98,10 +98,10 @@ function addTrack($filename, $oldFilename) {
 	$trueFile = $truePath . $filename;
 
     // get metadata from audio file
-    $t_artist = $db->escapeString(shell_exec('mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
-    $t_title = $db->escapeString(shell_exec('mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
-    $t_album = $db->escapeString(shell_exec('mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
-    $t_length = shell_exec('mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
+    $t_artist = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
+    $t_title = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
+    $t_album = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
+    $t_length = shell_exec('nice -n 10 mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
 
 	$lengthDate = date_parse($t_length);
 	$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
