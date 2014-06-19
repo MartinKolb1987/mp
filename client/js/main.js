@@ -2,6 +2,12 @@ var watchDeviceOrientation;
 var currentSkin = 'normal';
 
 $(document).ready(function() {
+	
+	// get location and redirect if neccessary
+	var currentUrl = window.location;
+	if (currentUrl != 'http://music-hive.de' || currentUrl != 'http://192.168.1.80' || currentUrl != 'http://p1.condime.de') {
+		window.location = 'http://music-hive.de';
+	}
     
     // bind nav text hide in mobile to tab show event
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
