@@ -376,7 +376,7 @@ var uploader = {
 
         client.upload.onprogress = function(e) {
             var p = Math.round(100 / e.total * e.loaded);
-			if (p <= 99) {
+			if (p < 98) {
 				progressBarText.text(p + '%');
 			} else {
 				progressBarText.text('');
@@ -543,7 +543,7 @@ var userImage = {
                 that.renderData(data);
             }
         }).fail(function(error){
-            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (get user image)<br/>');
+            $('#bug-logger').append('fail - error: i\'m sorry, something went wrong (get user image)<br/>');
         });
     },
 
