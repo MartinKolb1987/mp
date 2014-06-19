@@ -292,6 +292,7 @@ var uploader = {
                 $(this).siblings('.musichive-inline-table').find('.musichive-playlist-entry-title-text').text(that.filename);
                 $(this).siblings('.musichive-upload-song-icon').addClass('hide');
                 $(this).siblings('.musichive-upload-song-start, .musichive-upload-song-abort').removeClass('hide');
+				scrollInfoText();
             }
 
         });
@@ -678,7 +679,7 @@ var playList = {
                 currentlyPlaying.getCurrentlyPlayingData();
             }
         }).fail(function(error){
-            $('#bug-logger').append('fail - error: i´m sorry, something went wrong (remove track)<br/>');
+            $('#bug-logger').append('fail - error: i\'m sorry, something went wrong (remove track)<br/>');
         });
     },
 
@@ -749,7 +750,7 @@ var playList = {
                     currentlyPlaying.getCurrentlyPlayingData();
                 }
             }).fail(function(error){
-                $('#bug-logger').append('fail - error: i´m sorry, something went wrong (swap track data)<br/>');
+                $('#bug-logger').append('fail - error: I\'m sorry, something went wrong (swap track data)<br/>');
             });
 
     },
