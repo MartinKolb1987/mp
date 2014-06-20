@@ -12,9 +12,9 @@ require_once('users.php');
 
 
 /* addTrack()
- * @param String $filename filename and path of the track, String $oldFilename old filename from uploaded file
+ * @param String $filename filename and path of the track, String $t_artiest artist from metadata, String $t_title title from metadata, String $t_album album from metadata, Integer $t_length length in seconds from metadata
  */
-function addTrack($filename, $oldFilename) {
+function addTrack($filename, $t_artist, $t_title, $t_album, $t_length) {
     global $clientIp;
     global $truePath;
     $bucketToFill;
@@ -92,22 +92,6 @@ function addTrack($filename, $oldFilename) {
 	if ($bucketToFillCount == 0) {
 		// create new active bucket
 		$db->exec("INSERT INTO buckets (b_is_active) VALUES (0)");
-	}
-
-	// generate true file path with filename
-	$trueFile = $truePath . $filename;
-
-    // get metadata from audio file
-    $t_artist = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Performer%" "'.$trueFile. '"'));
-    $t_title = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Track%" "'.$trueFile. '"'));
-    $t_album = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Album%" "'.$trueFile. '"'));
-    $t_length = shell_exec('nice -n 10 mediainfo --Inform="General;%Duration/String3%" "'.$trueFile. '"');
-
-	$lengthDate = date_parse($t_length);
-	$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
-
-	if(strlen($t_title) <= 1) {
-		$t_title = $oldFilename;
 	}
 
     // insert track into db

@@ -185,9 +185,17 @@ function uploadFile($type, $file) {
     if($checkFileType == false) {
         die('error: file type does not match (uploadFile())');
     }
-    
+	
+    // initialize database   
+	$db = new ClientDB();
+	
     // get file name and extention
-    $fileName = urlencode(strtolower($file['name']));
+    $fileName = $db->escapeString(strtolower($file['name']));
+	
+	// close db
+	$db->close();
+	unset($db);
+	
 	$fileExt;
 	// check if filename has an extension (contains dot)
 	if (strpos($fileName, '.') !== false) {
@@ -208,14 +216,44 @@ function uploadFile($type, $file) {
     if($type == 'track') {
         // random number for the file
         $randomNo = rand(0, 9999999);
+		$tempPath = '/usr/share/nginx/html/server/tmp/';
+		$tempFile = $tempPath . $randomNo . $fileExt;
+		
+		// move file
+        if (move_uploaded_file($file['tmp_name'], $tempFile) == false) {
+            die('error: moving temp file failed (fileUpload() - audio track - #1)');
+        }
+		
+		// initialize database   
+		$db = new ClientDB();
+		
+		// get metadata from audio file
+		$t_artist = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Performer%" "'.$tempFile. '"'));
+		$t_title = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Track%" "'.$tempFile. '"'));
+		$t_album = $db->escapeString(shell_exec('nice -n 10 mediainfo --Inform="General;%Album%" "'.$tempFile. '"'));
+		$t_length = shell_exec('nice -n 10 mediainfo --Inform="General;%Duration/String3%" "'.$tempFile. '"');
+		
+		// close db
+		$db->close();
+		unset($db);
+	
+		$lengthDate = date_parse($t_length);
+		$t_length = $lengthDate['hour'] * 3600 + $lengthDate['minute'] * 60 + $lengthDate['second'];
+	
+		if(strlen($t_title) <= 1) {
+			$t_title = $fileName;
+		}
+		
         // generate new file name
         $newFilePath = $clientIp . '/' . $randomNo . $fileExt;
         // move file
-        if (move_uploaded_file($file['tmp_name'], $uploadDirectory . $newFilePath) == false) {
-            die('error: moving temp file failed (fileUpload() - audio track)');
+        if (rename($tempFile, ($uploadDirectory . $newFilePath)) == false) {
+            die('error: moving temp file failed (fileUpload() - audio track - #2)');
         }
+		
         // add to db
-        addTrack($newFilePath, $fileName);
+        addTrack($newFilePath, $t_artist, $t_title, $t_album, $t_length);
+		
     } elseif ($type == 'picture') {
         $newFilePath = $clientIp . '/user' . $fileExt;
         // move file
