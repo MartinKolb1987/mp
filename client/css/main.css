@@ -136,7 +136,7 @@ ul.nav-tabs {
     cursor: pointer;
     text-align: center;
     height: 4vw;
-    min-height: 40px;
+    min-height: 50px;
 }
 
 @media (min-width: 767px) {
@@ -205,7 +205,8 @@ ul.nav-tabs {
 
 .musichive-table-icon-container {
     width: 4vw;
-    min-width: 40px;
+    min-width: 50px;
+    min-height: 50px;
     text-align: center;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -226,14 +227,16 @@ ul.nav-tabs {
     display: inline-table;
     vertical-align: middle;
     height: 4vw;
-    min-height: 40px;
+    min-height: 50px;
+    min-width: 50px;
 }
 
 .musichive-table-cell {
     display: table-cell;
     vertical-align: middle;
     height: 4vw;
-    min-height: 40px;
+    min-height: 50px;
+    min-width: 50px;
 }
 
 .musichive-playlist-entry-container {
