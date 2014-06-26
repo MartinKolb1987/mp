@@ -181,6 +181,7 @@ var currentlyPlaying = {
             this.albumText.text('');
             this.durationText.text('');
             this.userImage.css('background-image', 'url(img/user-image.jpg)');
+            this.currentTrackId = '';
             return true;
         } else {
             this.downvote.removeClass('hide');
